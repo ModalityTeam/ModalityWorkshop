@@ -1,12 +1,12 @@
-// to use a modal control, we will use MFunc from the adclib.
+// to create a modal control, we will use MFunc from the adclib.
 
 // our simple use case:
 // we have two gamepad joystick axes that we use for continuous control of different synths.
 // the buttons on the shoulders of the gamepad select which synths the controls go to.
 // two other buttons start and stop the synths
 
-// prepare the sound sources:
 
+// prepare the sound sources:
 s.boot;
 
 (
@@ -135,6 +135,7 @@ k.elementAt( \b6 ).action.add( \togglePlay, { |mktel|
 } );
 );
 
+(
 // after testing, disable the debug action:
 k.elementAt( \b5 ).action.disable( \debug );
 k.elementAt( \b6 ).action.disable( \debug );
@@ -142,5 +143,6 @@ k.elementAt( \b7 ).action.disable( \debug );
 k.elementAt( \b8 ).action.disable( \debug );
 k.elementAt( \joy, \l, \x ).action.disable( \debug );
 k.elementAt( \joy, \l, \y ).action.disable( \debug );
+);
 
 // feel free to extend with more controls!
