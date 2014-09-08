@@ -101,6 +101,13 @@ k.elements[\joy][\l][\x].reset
 
 /// =========== output to elements =============
 
+// check which inputs are there:
+k.inputElements;
+
+// check which outputs are there:
+k.outputElements;
+
+
 // sending data to the output elements (may not work properly on OSX with HID)
 // value range between 0 and 1, will be mapped according to the spec given in the description file
 k.elements[\rumble][\l].value = 0.75;

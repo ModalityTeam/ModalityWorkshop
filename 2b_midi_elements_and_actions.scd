@@ -1,31 +1,41 @@
 /// Now that we have a device up and defined, what can we do with it?
-k = MKtl( 'rnnd0' );
+k = MKtl( 'cncn2000' );
 
 // print a nice list of elements
 k.printElementNames;
 
-// the buttons - in this case they are just numbered according to their labels:
-k.elements[\b1]
+// all the elements are hierarchical:
+k.elements[\but]
+k.elements[\kn]
+k.elements[\sl]
 
-// the joysticks are hierarchical - two joysticks with each x and y:
-k.elements[\joy];
-k.elements[\joy][\l];
-k.elements[\joy][\l][\x];
+// the sliders
+k.elements[\sl];
+k.elements[\sl][0];
+
+// the buttons:
+k.elements[\but]
+k.elements[\but][0]
+k.elements[\but][0][0]
 
 // or use another syntax:
-k.elementAt( \joy, \l, \x );
+k.elementAt( \but, 0, 0 );
 
 // in the printed element names, these show up with "_" in between: joy_l_x
+k.printElementNames;
 
 // getting the current value:
-k.elements[\joy][\l][\x].value;
+k.elements[\but][0][0].value;
 
+k.elements[\sl][0].value;
+
+// value is automatically mapped between 0 and 1
 
 //Add an action to the element:
-k.elements[\joy][\l][\x].action_({ |mktlElement| mktlElement.value.postln })
+k.elements[\sl][0].action_({ |mktlElement| mktlElement.value.postln })
 
 //to remove the action
-k.elements[\joy][\l][\x].reset
+k.elements[\sl][0].reset
 
 // example with sound:
 s.boot;
@@ -44,20 +54,20 @@ x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0]);
 //clear all actions first
 k.reset;
 
-//y-axis -> amplitude (0.5 is rest position, so we rescale to range of [-1,1]
-k.elements[\joy][\l][\y].action_({ |mktlElement| x !? _.set(\amp, mktlElement.value - 0.5 * 2) });
+//slider 0 -> amplitude
+k.elements[\sl][0].action_({ |mktlElement| x !? _.set(\amp, mktlElement.value) });
 
-//x-axis -> pan
-k.elements[\joy][\l][\x].action_({ |mktlElement| x !? _.set(\pan, mktlElement.value.linlin(0.0, 1.0, -1.0, 1.0) ) });
+//knob 0 -> pan
+k.elements[\kn][0].action_({ |mktlElement| x !? _.set(\pan, mktlElement.value.linlin(0.0, 1.0, -1.0, 1.0) ) });
 
-//other joystick y -> frequency
-k.elements[\joy][\r][\y].action_({ |mktlElement| x !? _.set(\freq, mktlElement.value.linlin(0.0, 1.0, 200, 2000) ) });
+//slider 1
+k.elements[\sl][1].action_({ |mktlElement| x !? _.set(\freq, mktlElement.value.linlin(0.0, 1.0, 200, 2000) ) });
 
-//other joystick x -> number of harmonics
-k.elements[\joy][\r][\x].action_({ |mktlElement| x !? _.set(\numHarmonics, mktlElement.value.linexp(0.0, 1.0, 1, 200) ) });
+//knob 1 -> number of harmonics
+k.elements[\kn][1].action_({ |mktlElement| x !? _.set(\numHarmonics, mktlElement.value.linexp(0.0, 1.0, 1, 200) ) });
 
-// button 6 (right shoulder) -> start and stop synth
-k.elements[\b6].action_({  |mktlElement|
+// play button -> start and stop synth
+k.elements[\leftbut][0][1].action_({  |mktlElement|
     if(mktlElement.value.booleanValue) {
         x !? _.free;
         x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0])
@@ -77,33 +87,43 @@ x.free;
 
 // assigning multiple actions can be done with .addAction;
 (
-k.elements[\joy][\l][\x].addAction({ |mktlElement| ("1 :"++mktlElement.value).postln });
-k.elements[\joy][\l][\x].addAction({ |mktlElement| ("2 :"++mktlElement.value).postln });
+k.elements[\sl][0].addAction({ |mktlElement| ("1 :"++mktlElement.value).postln });
+k.elements[\sl][0].addAction({ |mktlElement| ("2 :"++mktlElement.value).postln });
 )
 //clear all
-k.elements[\joy][\l][\x].reset
+k.elements[\sl][0].reset;
 
 /// to remove them you need to have a reference to the function
 (
 f = { |mktlElement| ("1 :"++mktlElement.value).postln };
 g = { |mktlElement| ("2 :"++mktlElement.value).postln };
-k.elements[\joy][\l][\x].addAction(f);
-k.elements[\joy][\l][\x].addAction(g);
+k.elements[\sl][0].addAction(f);
+k.elements[\sl][0].addAction(g);
 )
 
 //remove first action
-k.elements[\joy][\l][\x].removeAction(f);
+k.elements[\sl][0].removeAction(f);
 // just 2 is left
 
 //clear all
-k.elements[\joy][\l][\x].reset
+k.elements[\sl][0].reset
 
 
-/// =========== output to elements =============
+/// =========== output to elements (if you have any on your midi device) =============
 
-// sending data to the output elements (may not work properly on OSX with HID)
+// check which inputs are there:
+k.inputElements;
+
+// check which outputs are there:
+k.outputElements;
+
+// my device has none...
+
+// sending data to the output elements
 // value range between 0 and 1, will be mapped according to the spec given in the description file
+/*
 k.elements[\rumble][\l].value = 0.75;
 k.elements[\rumble][\l].value = 0;
 k.elements[\rumble][\r].value = 0.5;
 k.elements[\rumble][\r].value = 0;
+*/
