@@ -93,8 +93,8 @@ k.elementAt( \b8 ).action.add( \togglePlay, { |mktel|
 		if ( Ndef( \sound2 ).monitor.isPlaying ){
 			Ndef( \sound2 ).stop;
 			// disable controls
-			k.elementAt( \joy, \l, \x ).action.disable( \xSound1 );
-			k.elementAt( \joy, \l, \y ).action.disable( \ySound1 );
+			k.elementAt( \joy, \l, \x ).action.disable( \xSound2 );
+			k.elementAt( \joy, \l, \y ).action.disable( \ySound2 );
 		}{ Ndef( \sound2 ).play }
 	};
 } );
