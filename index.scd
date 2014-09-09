@@ -1,16 +1,16 @@
 ~basePath = "".resolveRelative;
 
 // installing Modality and other quarks for this workshop:
-~basePath +/+ "0_installing.scd";
+(~basePath +/+ "0_installing.scd").openDocument;
 
 // finding and defining devices:
-~basePath +/+ "finding_and_defining_devices_hid.scd";
-~basePath +/+ "finding_and_defining_devices_midi.scd";
+(~basePath +/+ "finding_and_defining_devices_hid.scd").openDocument;
+(~basePath +/+ "finding_and_defining_devices_midi.scd").openDocument;
 
 // exploring elements and actions:
-~basePath +/+ "elements_and_actions_hid.scd";
-~basePath +/+ "elements_and_actions_midi.scd";
+(~basePath +/+ "elements_and_actions_hid.scd").openDocument;
+(~basePath +/+ "elements_and_actions_midi.scd").openDocument;
 
 // some more modal functionality:
-~basePath +/+ "modal_functionality_2_hid.scd";
-~basePath +/+ "modal_functionality_2_midi.scd";
+(~basePath +/+ "modal_functionality_2_hid.scd").openDocument;
+(~basePath +/+ "modal_functionality_2_midi.scd").openDocument;
