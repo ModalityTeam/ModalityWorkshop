@@ -6,7 +6,7 @@ MKtl.openHelpFile;
 MKtl.find;
 
 // or for just one protocol:
-MKtl.find( 'hid' );
+MKtl.find( 'hid' ); // needs 3.7dev
 MKtl.find( 'midi' );
 
 // this will print out a list of devices, pick the one you want:
@@ -38,10 +38,10 @@ MKtl( 'rnnd0' );
 // if you do not have the device around, you can create a virtual one and simulate it with a GUI:
 
 //create a virtual Run'N'Drive
-MKtl.make(\fakeRun, \RunNDrive)
+MKtl.make(\fakeRun, \RunNDrive);
 
 //create a gui to control it
-// MKtl(\fakeRun).gui // gives a bug right now
+MKtl(\fakeRun).gui;
 
 
 // what can it do? complete list of the device description
