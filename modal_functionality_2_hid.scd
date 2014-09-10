@@ -38,6 +38,8 @@ Ndef( \sound2 ).addSpec(\freq2, [1500, 3500, \exp]);
 
 // the MKtl:
 k = MKtl( 'rnnd0' );
+//linux ?
+k = MKtl( 'thrs0' );
 
 // setting the continuous controls:
 (
@@ -144,5 +146,55 @@ k.elementAt( \b8 ).action.disable( \debug );
 k.elementAt( \joy, \l, \x ).action.disable( \debug );
 k.elementAt( \joy, \l, \y ).action.disable( \debug );
 );
+
+//toggle slider functionatlity
+(
+k.elementAt( \b7 ).action = MFunc.new;
+k.elementAt( \b7 ).action.add( \debug, { |mktel| "b1,0 ".post;
+mktel.value.postln; } );
+k.elementAt( \b7 ).action.add( \togglePlay, { |mktel|
+	if ( mktel.value == 1 ){
+		Ndef( \sound1 ).play
+	}{
+		Ndef( \sound1 ).stop;
+	}
+} );
+
+k.elementAt( \b8 ).action = MFunc.new;
+k.elementAt( \b8 ).action.add( \debug, { |mktel| "b1,1 ".post;
+mktel.value.postln; } );
+k.elementAt( \b8 ).action.add( \togglePlay, { |mktel|
+	if ( mktel.value == 1 ){
+		Ndef( \sound2 ).play
+	}{
+		Ndef( \sound2 ).stop;
+	}
+} );
+
+k.elementAt( \b9 ).action = MFunc.new;
+k.elementAt( \b9 ).action.add( \debug, { |mktel| "b1,2 ".post;
+mktel.value.postln; } );
+k.elementAt( \b9 ).action.add( \toggleSliders, { |mktel|
+	if ( mktel.value == 1 ){
+		k.elementAt( \joy, \l, \x ).action.enable( \xSound1 );
+		k.elementAt( \joy, \l, \y ).action.enable( \ySound1 );
+		k.elementAt( \joy, \l, \x ).action.disable( \xSound2 );
+		k.elementAt( \joy, \l, \y ).action.disable( \ySound2 );
+	}{
+		k.elementAt( \joy, \l, \x ).action.disable( \xSound1 );
+		k.elementAt( \joy, \l, \y ).action.disable( \ySound1 );
+		k.elementAt( \joy, \l, \x ).action.enable( \xSound2 );
+		k.elementAt( \joy, \l, \y ).action.enable( \ySound2 );
+	};
+} );
+
+k.elementAt( \joy, \l, \x ).action.enable( \xSound1 );
+k.elementAt( \joy, \l, \y ).action.enable( \ySound1 );
+k.elementAt( \joy, \l, \x ).action.disable( \xSound2 );
+k.elementAt( \joy, \l, \y ).action.disable( \ySound2 );
+
+);
+
+
 
 // feel free to extend with more controls!

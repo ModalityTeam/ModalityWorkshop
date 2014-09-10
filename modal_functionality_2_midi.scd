@@ -144,4 +144,55 @@ k.elementAt( \sl, 0 ).action.disable( \debug );
 k.elementAt( \sl, 1 ).action.disable( \debug );
 );
 
+//toggle slider functionatlity
+(
+k.elementAt( \but, 1, 0 ).action = MFunc.new;
+k.elementAt( \but, 1, 0 ).action.add( \debug, { |mktel| "b1,0 ".post;
+mktel.value.postln; } );
+k.elementAt( \but, 1, 0 ).action.add( \togglePlay, { |mktel|
+	if ( mktel.value == 1 ){
+		Ndef( \sound1 ).play
+	}{
+		Ndef( \sound1 ).stop;
+	}
+} );
+
+k.elementAt( \but, 1, 1 ).action = MFunc.new;
+k.elementAt( \but, 1, 1 ).action.add( \debug, { |mktel| "b1,1 ".post;
+mktel.value.postln; } );
+k.elementAt( \but, 1, 1 ).action.add( \togglePlay, { |mktel|
+	if ( mktel.value == 1 ){
+		Ndef( \sound2 ).play
+	}{
+		Ndef( \sound2 ).stop;
+	}
+} );
+
+k.elementAt( \but, 1, 2 ).action = MFunc.new;
+k.elementAt( \but, 1, 2 ).action.add( \debug, { |mktel| "b1,2 ".post;
+mktel.value.postln; } );
+k.elementAt( \but, 1, 2 ).action.add( \toggleSliders, { |mktel|
+	if ( mktel.value == 1 ){
+		k.elementAt( \sl, 0 ).action.enable( \sl1Sound1 );
+		k.elementAt( \sl, 1 ).action.enable( \sl2Sound1 );
+		k.elementAt( \sl, 0 ).action.disable( \sl1Sound2 );
+		k.elementAt( \sl, 1 ).action.disable( \sl2Sound2 );
+	}{
+		k.elementAt( \sl, 0 ).action.disable( \sl1Sound1 );
+		k.elementAt( \sl, 1 ).action.disable( \sl2Sound1 );
+		k.elementAt( \sl, 0 ).action.enable( \sl1Sound2 );
+		k.elementAt( \sl, 1 ).action.enable( \sl2Sound2 );
+	};
+} );
+
+k.elementAt( \sl, 0 ).action.enable( \sl1Sound1 );
+k.elementAt( \sl, 1 ).action.enable( \sl2Sound1 );
+k.elementAt( \sl, 0 ).action.disable( \sl1Sound2 );
+k.elementAt( \sl, 1 ).action.disable( \sl2Sound2 );
+
+);
+
+
+
+
 // feel free to extend with more controls!
