@@ -11,6 +11,11 @@
 (~basePath +/+ "elements_and_actions_hid.scd").openDocument;
 (~basePath +/+ "elements_and_actions_midi.scd").openDocument;
 
+
+// using ndefs:
+(~basePath +/+ "using_ndefs_hid.scd").openDocument;
+(~basePath +/+ "using_ndefs_midi.scd").openDocument;
+
 // some more modal functionality:
 (~basePath +/+ "modal_functionality_2_hid.scd").openDocument;
 (~basePath +/+ "modal_functionality_2_midi.scd").openDocument;
