@@ -7,8 +7,8 @@ It is designed and developed by the ModalityTeam, a group of people that see the
 The central idea behind the Modality-toolkit is to simplify creation of individual (electronic) instruments with SuperCollider, using controllers of various kinds. To this end, a common code interface, MKtl, is used for connecting  controllers from various sources (and protocols). These are atm. HID and MIDI; OSC, Serialport and GUI-based are planned to be integrated.
 
 The name *Modality* arose from the idea to scaffold the creation of modal interfaces, i.e. to create interfaces where one physical controller can be used for different purposes and it is possible to *switch its functionality, even at runtime*.
-It is our believe that integration of such on-the-fly remapping features helps to create a setup much more flexible, powerful, and interesting to play.
-Such a modal interface allows to cope with fast changes of overall direction as it can be necessary when e.g. improvising with musicians playing acoustic instruments.
+It is our belief that integration of such on-the-fly remapping features helps to create setups which are much more flexible, powerful, and interesting to play.
+Such modal interfaces allow coping with fast changes of overall direction as it can be necessary when e.g. improvising with musicians playing acoustic instruments.
 */
 
 // Installation
