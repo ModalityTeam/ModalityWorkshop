@@ -34,7 +34,7 @@ m.action.add ( \setx, { |mv| Ndef(\x).set(\amp, mv.value) });
 m.action.add ( \setx, { |mv| Ndef(\x).setUni(\amp, mv.value) });
 
 // change Ndef(\x) to have a freq input (has a default spec)
-Ndef(\x, { |amp = 0.1, freq = 220| RLPF.ar(GrayNoise.ar([amp, amp]), freq, 0.2) } ).play;
+Ndef(\x, { |amp = 0.1, freq = 440| RLPF.ar(GrayNoise.ar([amp, amp]), freq, 0.2) } ).play;
 
 // change mview's action to set x freq by default spec
 m.action.add ( \setx, { |mv| Ndef(\x).setUni(\freq, mv.value) });
@@ -49,19 +49,26 @@ Ndef(\x).addSpec (\freq, [200, 20000,\exp ]);
 Ndef(\x).addSpec (\freq, [20000, 200,\exp ]);
 
 //With Modality:
-
+HIDMKtl.find;
 // the MKtl:
-k = MKtl( 'rnnd0' );
+k = HIDMKtl( 'rnnd0' );
 //linux ?
 k = MKtl( 'thrs0' );
 
-//control paramter
-k.elements[\joy][\l][\x].action = { |el| Ndef(\x).setUni(\freq, el.value) };
+
+//control parameter
+k.elements[\joy][\l][\x].action = { |el| Ndef(\x).setUni(\freq,  el.value) };
+
+// if this feels too slow, try setting
+// server latency to nil, or a low number like 0.03 secs
+s.latency = nil;
+
+k.printElementNames
 
 //start / stop
 (
 ~toggleState = false;
-k.elements[\b1].action = { |el|
+k.elements[\bt][1].action = { |el|
 	if(el.value==1){
 		~toggleState = ~toggleState.not;
 	};
