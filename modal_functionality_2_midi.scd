@@ -37,6 +37,10 @@ Ndef( \sound2 ).addSpec(\freq2, [1500, 3500, \exp]);
 
 // the MKtl:
 k = MKtl( 'cncn2000' );
+/// or nano
+k = MKtl( 'nnkn20' );
+
+Ndef( \sound1).play
 
 // setting the continuous controls:
 (
@@ -72,9 +76,9 @@ k.elementAt( \sl, 1 ).action.add( \sl2Sound2, { |mktel|
 
 // starting and stopping the ndefs:
 (
-k.elementAt( \but, 1, 0 ).action = MFunc.new;
-k.elementAt( \but, 1, 0 ).action.add( \debug, { |mktel| "b1,0 ".post; mktel.value.postln; } );
-k.elementAt( \but, 1, 0 ).action.add( \togglePlay, { |mktel|
+k.elementAt( \bt, 1, 0 ).action = MFunc.new;
+k.elementAt( \bt, 1, 0 ).action.add( \debug, { |mktel| "b1,0 ".post; mktel.value.postln; } );
+k.elementAt( \bt, 1, 0 ).action.add( \togglePlay, { |mktel|
 	if ( mktel.value == 1 ){ // only when pressed
 		if ( Ndef( \sound1 ).monitor.isPlaying ){
 			Ndef( \sound1 ).stop;
@@ -85,9 +89,9 @@ k.elementAt( \but, 1, 0 ).action.add( \togglePlay, { |mktel|
 	};
 } );
 
-k.elementAt( \but, 1, 1 ).action = MFunc.new;
-k.elementAt( \but, 1, 1 ).action.add( \debug, { |mktel| "b1,1 ".post; mktel.value.postln; } );
-k.elementAt( \but, 1, 1 ).action.add( \togglePlay, { |mktel|
+k.elementAt( \bt, 1, 1 ).action = MFunc.new;
+k.elementAt( \bt, 1, 1 ).action.add( \debug, { |mktel| "b1,1 ".post; mktel.value.postln; } );
+k.elementAt( \bt, 1, 1 ).action.add( \togglePlay, { |mktel|
 	if ( mktel.value == 1 ){ // only when pressed
 		if ( Ndef( \sound2 ).monitor.isPlaying ){
 			Ndef( \sound2 ).stop;
@@ -101,9 +105,9 @@ k.elementAt( \but, 1, 1 ).action.add( \togglePlay, { |mktel|
 
 // just enable controls when button pressed:
 (
-k.elementAt( \but, 0, 0 ).action = MFunc.new;
-k.elementAt( \but, 0, 0 ).action.add( \debug, { |mktel| "b0,0 ".post; mktel.value.postln; } );
-k.elementAt( \but, 0, 0 ).action.add( \togglePlay, { |mktel|
+k.elementAt( \bt, 0, 0 ).action = MFunc.new;
+k.elementAt( \bt, 0, 0 ).action.add( \debug, { |mktel| "b0,0 ".post; mktel.value.postln; } );
+k.elementAt( \bt, 0, 0 ).action.add( \togglePlay, { |mktel|
 	if ( Ndef( \sound1 ).monitor.isPlaying ){
 		if ( mktel.value == 1 ){ // only when pressed
 			k.elementAt( \sl, 0 ).action.enable( \sl1Sound1 );
@@ -118,9 +122,9 @@ k.elementAt( \but, 0, 0 ).action.add( \togglePlay, { |mktel|
 );
 
 (
-k.elementAt( \but, 0, 1 ).action = MFunc.new;
-k.elementAt( \but, 0, 1 ).action.add( \debug, { |mktel| "b0, 1 ".post; mktel.value.postln; } );
-k.elementAt( \but, 0, 1 ).action.add( \togglePlay, { |mktel|
+k.elementAt( \bt, 0, 1 ).action = MFunc.new;
+k.elementAt( \bt, 0, 1 ).action.add( \debug, { |mktel| "b0, 1 ".post; mktel.value.postln; } );
+k.elementAt( \bt, 0, 1 ).action.add( \togglePlay, { |mktel|
 	if ( Ndef( \sound2 ).monitor.isPlaying ){
 		if ( mktel.value == 1 ){ // only when pressed
 			k.elementAt( \sl, 0 ).action.enable( \sl1Sound2 );
@@ -136,20 +140,20 @@ k.elementAt( \but, 0, 1 ).action.add( \togglePlay, { |mktel|
 
 (
 // after testing, disable the debug action:
-k.elementAt( \but, 0, 0 ).action.disable( \debug );
-k.elementAt( \but, 1, 0 ).action.disable( \debug );
-k.elementAt( \but, 0, 1 ).action.disable( \debug );
-k.elementAt( \but, 1, 1 ).action.disable( \debug );
+k.elementAt( \bt, 0, 0 ).action.disable( \debug );
+k.elementAt( \bt, 1, 0 ).action.disable( \debug );
+k.elementAt( \bt, 0, 1 ).action.disable( \debug );
+k.elementAt( \bt, 1, 1 ).action.disable( \debug );
 k.elementAt( \sl, 0 ).action.disable( \debug );
 k.elementAt( \sl, 1 ).action.disable( \debug );
 );
 
 //toggle slider functionatlity
 (
-k.elementAt( \but, 1, 0 ).action = MFunc.new;
-k.elementAt( \but, 1, 0 ).action.add( \debug, { |mktel| "b1,0 ".post;
+k.elementAt( \bt, 1, 0 ).action = MFunc.new;
+k.elementAt( \bt, 1, 0 ).action.add( \debug, { |mktel| "b1,0 ".post;
 mktel.value.postln; } );
-k.elementAt( \but, 1, 0 ).action.add( \togglePlay, { |mktel|
+k.elementAt( \bt, 1, 0 ).action.add( \togglePlay, { |mktel|
 	if ( mktel.value == 1 ){
 		Ndef( \sound1 ).play
 	}{
@@ -157,10 +161,10 @@ k.elementAt( \but, 1, 0 ).action.add( \togglePlay, { |mktel|
 	}
 } );
 
-k.elementAt( \but, 1, 1 ).action = MFunc.new;
-k.elementAt( \but, 1, 1 ).action.add( \debug, { |mktel| "b1,1 ".post;
+k.elementAt( \bt, 1, 1 ).action = MFunc.new;
+k.elementAt( \bt, 1, 1 ).action.add( \debug, { |mktel| "b1,1 ".post;
 mktel.value.postln; } );
-k.elementAt( \but, 1, 1 ).action.add( \togglePlay, { |mktel|
+k.elementAt( \bt, 1, 1 ).action.add( \togglePlay, { |mktel|
 	if ( mktel.value == 1 ){
 		Ndef( \sound2 ).play
 	}{
@@ -168,10 +172,10 @@ k.elementAt( \but, 1, 1 ).action.add( \togglePlay, { |mktel|
 	}
 } );
 
-k.elementAt( \but, 1, 2 ).action = MFunc.new;
-k.elementAt( \but, 1, 2 ).action.add( \debug, { |mktel| "b1,2 ".post;
+k.elementAt( \bt, 1, 2 ).action = MFunc.new;
+k.elementAt( \bt, 1, 2 ).action.add( \debug, { |mktel| "b1,2 ".post;
 mktel.value.postln; } );
-k.elementAt( \but, 1, 2 ).action.add( \toggleSliders, { |mktel|
+k.elementAt( \bt, 1, 2 ).action.add( \toggleSliders, { |mktel|
 	if ( mktel.value == 1 ){
 		k.elementAt( \sl, 0 ).action.enable( \sl1Sound1 );
 		k.elementAt( \sl, 1 ).action.enable( \sl2Sound1 );

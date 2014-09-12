@@ -3,12 +3,14 @@ Ndef(\x ).play;
 
 // put a sound there
 Ndef(\x, { GrayNoise.ar } ).play;
-// replace it with a more specific version
+
+// replace it with a more specific version, e.g. softer?
 Ndef(\x, { GrayNoise.ar([0.2, 0.2]) } ).play;
+
 // or a different sound
 Ndef(\x, { Dust.ar([30, 30], 0.5 ) } ).play;
 
-// add a control input, as in all synth funcions
+// add a control input, as in all synth functions
 Ndef(\x, { |amp = 0.1| GrayNoise.ar([amp, amp]) } ).play;
 
 // make a simple gui for it, NdefGui
@@ -16,9 +18,12 @@ Ndef(\x).gui;
 
 // set amp directly
 Ndef(\x).set(\amp, 0.2);
-// set amp from unipolar value, by mapping thu \amp spec
+// or set amp from unipolar value, by mapping thu \amp spec
 Ndef(\x).setUni(\amp, 0.2);
 
+// the \amp warp is designed so that faders have -12dB,
+// which is 0.25 linear amp) in the middle, and it looks like this:
+(0, 0.01 .. 1).collect(\amp.asSpec.map(_)).plot;
 
 // use a gui as pseudo-physical controller
 m = MView(0.25);
@@ -36,10 +41,11 @@ m.action.add ( \setx, { |mv| Ndef(\x).setUni(\freq, mv.value) });
 
 // tell the Ndef which spec to use for mapping
 Ndef(\x).addSpec (\freq, [200, 20000 ]);
-// and change it again to adjust
+
+// oh, this was linear, better make it exponential:
 Ndef(\x).addSpec (\freq, [200, 20000,\exp ]);
 
-// e.g. invert the range ...
+// or e.g. invert the range ...
 Ndef(\x).addSpec (\freq, [20000, 200,\exp ]);
 
 //With Modality:
