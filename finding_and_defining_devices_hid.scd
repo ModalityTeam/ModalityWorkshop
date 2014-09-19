@@ -43,6 +43,9 @@ MKtl.make(\fakeRun, \RunNDrive);
 //create a gui to control it
 MKtl(\fakeRun).gui;
 
+// or just use the shortcut directly, and the gui pops up:
+MKtl( 'rnnd0' );
+
 
 // what can it do? complete list of the device description
 MKtl( 'rnnd0' ).postDeviceDescription
@@ -62,6 +65,7 @@ MKtl( 'rnnd0' ).verbose_( false );
 "HIDExplorer".openHelpFile;
 //Or just use:
 MKtl( 'rnnd0' ).createDescFromDevice;
+
 
 // --- does anyone have a device that is not yet known by the toolkit?
 // - pick one to give an example how it works for everyone, preferably one of each type (MIDI / HID)

@@ -45,6 +45,8 @@ MKtl.make(\fakeIcon, \ICONIControls)
 //create a gui to control it
 MKtl(\fakeIcon).gui // gives a bug right now
 
+// or just use the shortcut directly, and the gui pops up:
+MKtl( 'cncn2000' );
 
 // what can it do? complete list of the device description
 MKtl( 'cncn2000' ).postDeviceDescription
