@@ -72,21 +72,8 @@ k.elements[\sl][1].action_({ |mktlElement| x !? _.set(\freq, mktlElement.value.l
 k.elements[\kn][1].action_({ |mktlElement| x !? _.set(\numHarmonics, mktlElement.value.linexp(0.0, 1.0, 1, 200) ) });
 )
 
-( // on the iControls :
+(
 // play button -> start and stop synth
-k.elements[\leftbt][0][1].action_({  |mktlElement|
-    if(mktlElement.value.booleanValue) {
-        x !? _.free;
-        x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0])
-    } {
-        x !? _.free;
-        x = nil;
-    }
-})
-)
-);
-
-// on nanoKontrol, that button is just called \play
 k.elements[\play].action_({  |mktlElement|
     if(mktlElement.value.booleanValue) {
         x !? _.free;
@@ -95,7 +82,8 @@ k.elements[\play].action_({  |mktlElement|
         x !? _.free;
         x = nil;
     }
-})
+});
+);
 
 // clear all functions
 k.reset;

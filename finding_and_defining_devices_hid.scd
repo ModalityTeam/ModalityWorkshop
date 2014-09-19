@@ -71,3 +71,4 @@ MKtl( 'rnnd0' ).createDescFromDevice;
 // - pick one to give an example how it works for everyone, preferably one of each type (MIDI / HID)
 // - then help those who have other devices that do not work out of the box
 
+// give an example with Impact gamepad

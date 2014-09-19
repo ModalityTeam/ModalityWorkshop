@@ -53,7 +53,7 @@ k.elements[\sl][0].action = { |el| Ndef(\x).setUni(\freq, el.value) };
 //start / stop
 (
 ~toggleState = false;
-k.elements[\but][0][0].action = { |el|
+k.elements[\play].action = { |el|
 	if(el.value==1){
 		~toggleState = ~toggleState.not;
 	};

@@ -19,9 +19,11 @@
 
 
 // some shared sound processes:
+// on OSX only:
 unixCmd("open" + (~basePath +/+ "shared_processes"));
+
 (~basePath +/+ "shared_processes/*").pathMatch.collect(_.basename).postcs;
-(~basePath +/+ "shared_processes/*").pathMatch.choose.openOS;
+(~basePath +/+ "shared_processes/*").pathMatch.choose.openDocument;
 // open one of them:
 (~basePath +/+ "shared_processes/cat.scd").openDocument;
 // load one directly, e.g. for use in controller patches:

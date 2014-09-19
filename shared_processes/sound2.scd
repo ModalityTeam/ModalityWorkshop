@@ -1,4 +1,4 @@
-
+(
 Ndef( \sound2, {
 	var dens = \dens.kr(30);
 	var snd = Ringz.ar(Dust2.ar(dens, 0.8), [ \freq1.kr(400), \freq2.kr(500)], 0.03).sum;

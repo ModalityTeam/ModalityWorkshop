@@ -51,10 +51,7 @@ Ndef(\x).addSpec (\freq, [20000, 200,\exp ]);
 //With Modality:
 HIDMKtl.find;
 // the MKtl:
-k = HIDMKtl( 'rnnd0' );
-//linux ?
-k = MKtl( 'thrs0' );
-
+k = MKtl( 'rnnd0' );
 
 //control parameter
 k.elements[\joy][\l][\x].action = { |el| Ndef(\x).setUni(\freq,  el.value) };
@@ -63,6 +60,7 @@ k.elements[\joy][\l][\x].action = { |el| Ndef(\x).setUni(\freq,  el.value) };
 // server latency to nil, or a low number like 0.03 secs
 s.latency = nil;
 
+// check element names
 k.printElementNames
 
 //start / stop
