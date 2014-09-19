@@ -1,11 +1,16 @@
 /// Now that we have a device up and defined, what can we do with it?
-k = MKtl( 'cncn2000' );
+MKtl.find;
+k = MKtl( 'cncn2000' ); // an iControls
+
+// or if it is a nanoKontrol 2:
+k = MKtl( 'nnkn20' );
+
 
 // print a nice list of elements
 k.printElementNames;
 
 // all the elements are hierarchical:
-k.elements[\but]
+k.elements[\bt]
 k.elements[\kn]
 k.elements[\sl]
 
@@ -14,18 +19,18 @@ k.elements[\sl];
 k.elements[\sl][0];
 
 // the buttons:
-k.elements[\but]
-k.elements[\but][0]
-k.elements[\but][0][0]
+k.elements[\bt]    // all ordered buttons, left to right
+k.elements[\bt][0] // that is rows
+k.elements[\bt][0][0] // and then columns
 
 // or use another syntax:
-k.elementAt( \but, 0, 0 );
+k.elementAt( \bt, 0, 0 );
 
 // in the printed element names, these show up with "_" in between: joy_l_x
 k.printElementNames;
 
 // getting the current value:
-k.elements[\but][0][0].value;
+k.elements[\bt][0][0].value;
 
 k.elements[\sl][0].value;
 
@@ -65,9 +70,11 @@ k.elements[\sl][1].action_({ |mktlElement| x !? _.set(\freq, mktlElement.value.l
 
 //knob 1 -> number of harmonics
 k.elements[\kn][1].action_({ |mktlElement| x !? _.set(\numHarmonics, mktlElement.value.linexp(0.0, 1.0, 1, 200) ) });
+)
 
+( // on the iControls :
 // play button -> start and stop synth
-k.elements[\leftbut][0][1].action_({  |mktlElement|
+k.elements[\leftbt][0][1].action_({  |mktlElement|
     if(mktlElement.value.booleanValue) {
         x !? _.free;
         x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0])
@@ -78,6 +85,17 @@ k.elements[\leftbut][0][1].action_({  |mktlElement|
 })
 )
 );
+
+// on nanoKontrol, that button is just called \play
+k.elements[\play].action_({  |mktlElement|
+    if(mktlElement.value.booleanValue) {
+        x !? _.free;
+        x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0])
+    } {
+        x !? _.free;
+        x = nil;
+    }
+})
 
 // clear all functions
 k.reset;

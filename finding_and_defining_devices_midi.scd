@@ -30,7 +30,7 @@ MKtl.find( 'midi' );
    HIDMKtl('prtk20', "02");  // No brand 2Port KVMSwicther
 */
 
-// e.g. we want to open the Thrustmaster Run'N' Drive:
+// e.g. we want to open the iCON iControls:
 
 MKtl( 'cncn2000' );
 
@@ -39,8 +39,8 @@ MKtl( 'cncn2000' ).gui;
 
 // if you do not have the device around, you can create a virtual one and simulate it with a GUI:
 
-//create a virtual Run'N'Drive
-MKtl.make(\fakeIcon, \ICONIControls)
+//create a virtual iCON
+MKtl.make(\fakeIcon, \ICONIControls);
 
 //create a gui to control it
 MKtl(\fakeIcon).gui // gives a bug right now

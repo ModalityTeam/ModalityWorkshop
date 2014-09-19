@@ -47,7 +47,7 @@ Ndef(\x).addSpec (\freq, [20000, 200,\exp ]);
 // the MKtl:
 k = MKtl( 'cncn2000' );
 
-//control paramter
+//control a parameter
 k.elements[\sl][0].action = { |el| Ndef(\x).setUni(\freq, el.value) };
 
 //start / stop
