@@ -48,4 +48,5 @@ Platform.userAppSupportDir.openOS;
 Quarks.updateDirectory;
 Quarks.install("JITLibExtensions");
 Quarks.install("adclib");
+Quarks.install("SpeakersCorner");
 thisProcess.recompile;
