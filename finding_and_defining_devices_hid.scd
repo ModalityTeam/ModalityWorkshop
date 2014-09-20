@@ -63,12 +63,18 @@ MKtl( 'rnnd0' ).verbose_( false );
 "How to create a description file".openHelpFile;
 
 "HIDExplorer".openHelpFile;
-//Or just use:
-MKtl( 'rnnd0' ).createDescFromDevice;
 
+//Or just use:
+MKtl( 'rnnd0' ).createDescFromDevice; // this creates a template file
+MKtl( 'rnnd0' ).explore( true ); // this will post information about the incoming data from the device
+
+
+// save the description file in:
+MKtl.deviceDescriptionFolder.openOS;
+
+// and stop the posting:
+MKtl( 'rnnd0' ).explore( false );
 
 // --- does anyone have a device that is not yet known by the toolkit?
 // - pick one to give an example how it works for everyone, preferably one of each type (MIDI / HID)
 // - then help those who have other devices that do not work out of the box
-
-// give an example with Impact gamepad

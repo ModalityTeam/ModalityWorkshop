@@ -44,14 +44,12 @@ k = MKtl( 'rnnd0' );
 k.elementAt( \joy, \l, \x ).action = MFunc.new;
 k.elementAt( \joy, \l, \x ).action.add( \debug, { |mktel| "joy,x,l, ".post; mktel.value.postln; } );
 k.elementAt( \joy, \l, \x ).action.add( \xSound1, { |mktel|
-	var specName = Ndef( \sound1 ).getHalo(\xParam);
-	var spec = Ndef( \sound1 ).getSpec( specName );
-	Ndef( \sound1 ).set( specName, spec.map( mktel.value ) )
+	var ctlName = Ndef( \sound1 ).getHalo(\xParam);
+	Ndef( \sound1 ).setUni( ctlName, mktel.value );
 });
 k.elementAt( \joy, \l, \x ).action.add( \xSound2, { |mktel|
-	var specName = Ndef( \sound2 ).getHalo(\xParam);
-	var spec = Ndef( \sound2 ).getSpec( specName );
-	Ndef( \sound2 ).set( specName, spec.map( mktel.value ) )
+	var ctlName = Ndef( \sound2 ).getHalo(\xParam);
+	Ndef( \sound2 ).setUni( ctlName, mktel.value );
 });
 );
 
@@ -59,14 +57,12 @@ k.elementAt( \joy, \l, \x ).action.add( \xSound2, { |mktel|
 k.elementAt( \joy, \l, \y ).action = MFunc.new;
 k.elementAt( \joy, \l, \y ).action.add( \debug, { |mktel| "joy,y,l, ".post; mktel.value.postln; } );
 k.elementAt( \joy, \l, \y ).action.add( \ySound1, { |mktel|
-	var specName = Ndef( \sound1 ).getHalo(\yParam);
-	var spec = Ndef( \sound1 ).getSpec( specName );
-	Ndef( \sound1 ).set( specName, spec.map( mktel.value ) )
+	var ctlName = Ndef( \sound1 ).getHalo(\yParam);
+	Ndef( \sound1 ).setUni( ctlName, mktel.value );
 });
 k.elementAt( \joy, \l, \y ).action.add( \ySound2, { |mktel|
-	var specName = Ndef( \sound2 ).getHalo(\yParam);
-	var spec = Ndef( \sound2 ).getSpec( specName );
-	Ndef( \sound2 ).set( specName, spec.map( mktel.value ) )
+	var ctlName = Ndef( \sound2 ).getHalo(\yParam);
+	Ndef( \sound2 ).setUni( ctlName, mktel.value );
 });
 
 );

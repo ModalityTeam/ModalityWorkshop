@@ -58,14 +58,12 @@ k.elementAt( \sl, 0 ).action.add( \debug, { |mktel|
 	"sl0 ".post; mktel.value.postln;
 } );
 k.elementAt( \sl, 0 ).action.add( \sl1Sound1, { |mktel|
-	var specName = Ndef( \sound1 ).getHalo(\sl1Param);
-	var spec = Ndef( \sound1 ).getSpec( specName );
-	Ndef( \sound1 ).set( specName, spec.map( mktel.value ) )
+	var ctlName = Ndef( \sound1 ).getHalo(\sl1Param);
+	Ndef( \sound1 ).setUni( ctlName, mktel.value )
 });
 k.elementAt( \sl, 0 ).action.add( \sl1Sound2, { |mktel|
-	var specName = Ndef( \sound2 ).getHalo(\sl1Param);
-	var spec = Ndef( \sound2 ).getSpec( specName );
-	Ndef( \sound2 ).set( specName, spec.map( mktel.value ) )
+	var ctlName = Ndef( \sound2 ).getHalo(\sl1Param);
+	Ndef( \sound2 ).setUni( ctlName, mktel.value )
 });
 );
 
@@ -77,14 +75,12 @@ k.elementAt( \sl, 1 ).action.add( \debug, { |mktel|
 	"sl1 ".post; mktel.value.postln;
 } );
 k.elementAt( \sl, 1 ).action.add( \sl2Sound1, { |mktel|
-	var specName = Ndef( \sound1 ).getHalo(\sl2Param);
-	var spec = Ndef( \sound1 ).getSpec( specName );
-	Ndef( \sound1 ).set( specName, spec.map( mktel.value ) )
+	var ctlName = Ndef( \sound1 ).getHalo(\sl2Param);
+	Ndef( \sound1 ).setUni( ctlName, mktel.value );
 });
 k.elementAt( \sl, 1 ).action.add( \sl2Sound2, { |mktel|
-	var specName = Ndef( \sound2 ).getHalo(\sl2Param);
-	var spec = Ndef( \sound2 ).getSpec( specName );
-	Ndef( \sound2 ).set( specName, spec.map( mktel.value ) )
+	var ctlName = Ndef( \sound2 ).getHalo(\sl2Param);
+	Ndef( \sound2 ).setUni( ctlName, mktel.value );
 });
 );
 

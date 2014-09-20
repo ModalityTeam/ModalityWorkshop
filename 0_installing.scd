@@ -46,7 +46,18 @@ Platform.userAppSupportDir.openOS;
 
 // install the additional quarks:
 Quarks.updateDirectory;
+// if you get an error on OSX in the terminal that pops up that says something about the svn version being outdated, use this line to set the svn path:
+QuarkSVNRepository.svnpath_( "/opt/local/bin/svn" );
+
+// update to the latest versions of the quarks that we need:
+Quarks.update("JITLibExtensions");
+Quarks.update("adclib");
+Quarks.update("SpeakersCorner");
+
+// install the quarks that we need:
 Quarks.install("JITLibExtensions");
 Quarks.install("adclib");
 Quarks.install("SpeakersCorner");
+
+// and recompile the language to use it all:
 thisProcess.recompile;

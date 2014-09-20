@@ -19,6 +19,11 @@ Ndef(\x).set(\amp, 0.2);
 // set amp from unipolar value, by mapping thu \amp spec
 Ndef(\x).setUni(\amp, 0.2);
 
+// post the spec as known for amp: - these are predefined in supercollider
+\amp.asSpec
+// post the spec as known for freq: - these are predefined in supercollider
+\freq.asSpec
+
 
 // use a gui as pseudo-physical controller
 m = MView(0.25);
