@@ -32,7 +32,7 @@ MKtl.find( 'midi' );
 
 // e.g. we want to open the iCON iControls:
 
-MKtl( 'cncn2000' );
+MKtl( 'mcrk0' );
 
 // create a gui to represent it:
 MKtl( 'cncn2000' ).gui;
@@ -55,14 +55,19 @@ MKtl( 'cncn2000' ).postDeviceDescription
 MKtl( 'cncn2000' ).printElementNames
 
 // print the output:
-MKtl( 'cncn2000' ).verbose_( true );
+MKtl( 'mcrk0' ).verbose_( true );
 
 // turn that off again:
-MKtl( 'cncn2000' ).verbose_( false );
+MKtl( 'mcrk0' ).verbose_( false );
 
 // this printing only works if your device is known already by the toolkit. If not, you can create your own description file:
 "How to create a description file".openHelpFile;
 //"MIDIExplorer".openHelpFile;
+
+MKtl( 'mcrk0' ).explore( true );
+// wiggle everything a bit and then:
+
+MKtl( 'mcrk0' ).createDescriptionFile;
 
 // --- does anyone have a device that is not yet known by the toolkit?
 // - pick one to give an example how it works for everyone, preferably one of each type (MIDI / HID)
