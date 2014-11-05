@@ -1,0 +1,44 @@
+s.boot;
+
+// get access to an MKtl. This example uses a nanoKontrol2.
+// You should be able to adapt it to your available controller quite easily.
+// For a more detailed version of this file, see
+"Tutorials/ModalityTutorial".openHelpFile
+
+// open the MKtl
+k = MKtl('nnkn20');
+
+// create a Synth to control
+(
+SynthDef(\blippy, {
+    var sound = Blip.ar(
+        \freq.kr(440).lag(0.1),
+        \numHarmonics.kr(100),
+        \amp.kr(1.0).lag(0.1)
+    ) * 0.5;
+
+    sound = RLPF.ar(sound, 5000);
+    Out.ar(0, Pan2.ar(sound, \pan.kr(0).lag(0.1) ) )
+}).add
+)
+
+(
+//start it
+x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0]);
+
+//clear all actions first
+k.reset;
+
+//knob 1 -> amplitude
+k.elementAt(\kn, 0).action_({ |el| x.set(\amp, el.value) });
+
+//knob 2 -> pan
+k.elementAt(\kn, 1).action_({ |el| x.set(\pan, el.value.linlin(0.0, 1.0, -1.0, 1.0) ) });
+
+//slider 1 -> frequency
+k.elementAt(\sl, 0).action_({ |el| x.set(\freq, el.value.linlin(0.0, 1.0, 100, 400) ) });
+
+//slider 2 -> number of harmonics
+k.elementAt(\sl, 1).action_({ |el| x.set(\numHarmonics, el.value.linexp(0.0, 1.0, 5, 200) ) });
+
+)
