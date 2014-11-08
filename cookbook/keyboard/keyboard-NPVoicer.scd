@@ -8,9 +8,11 @@
 s.boot;
 s.latency = nil; // make sure there is no artificial latency
 
+
 m = MKtl('pmdd10');
 
 
+m.gui
 (
 (
 SynthDef(\a, {|out = 0, midiNote = 50, bendFac = 0.5, res = 0, ffac = 1, gate = 1|
