@@ -49,6 +49,13 @@ Ndef(\test, { |freq=250, intv=19, timescale=1, curve=0, loopnode=0, formfact=2, 
 	Spec.add(\spread, \unipolar);
 );
 
+// make a little gui to see Ndef parameter and playing state:
+
+q.ndgui = NdefGui(Ndef(\test), 8);
+q.ndgui.skipjack.dt = 0.05; // faster updates
+
+
+// now make an MKtl:
 q.nk = MKtl(\nnkn20);
 
 // map group of mktl elements to array of proxy params:
@@ -83,6 +90,17 @@ q.nk.at(\play).action = { |el| Ndef(\test).play; };
 q.nk.at(\stop).action = { |el| Ndef(\test).stop; };
 
 // ... and test that all these work as intended!
+
+
+//NOTE - you can close the NdefGui, and connections still work,
+// because we connected directly to the Ndef itself!
+
+q.ndgui.close;
+
+// make it again ?
+q.ndgui = NdefGui(Ndef(\test), 8);
+q.ndgui.skipjack.dt = 0.05; // faster updates
+
 
 
 
@@ -172,9 +190,14 @@ q.setNkProxy(Ndef(\test2));
 // back to first proxy:
 q.setNkProxy(Ndef(\test));
 
-
 // now assign rew and fwd buttons to switch between \test and \test2
 q.nk.at(\rew).action = { |el| q.setNkProxy(Ndef(\test)); };
 q.nk.at(\fwd).action = { |el| q.setNkProxy(Ndef(\test2)); };
 
-// to be continued with guis 
+// to be continued with guis
+
+
+// a visual interface for all Ndefs
+q.ndmx = NdefMixer(s, 10);
+// put the first Ndef in the NdefGui on right hand side
+q.ndmx.arGuis.first.edBut.valueAction_(1);
