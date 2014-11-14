@@ -7,13 +7,18 @@ a fluid fluid style of experimenting with ideas.
 "JITLib".openHelpFile
 [Ndef, Tdef, Pdef].choose.openHelpFile;
 
+for basics, see also the files in base-workshop
 
-The examples here show how to connect an MKtl directly
-to a sound proxy, an Ndef, the typical questions that arise,
-and how to switch the same interface between two proxies.
+The examples in this file show how to connect an MKtl
+directly to a sound proxy, a so-called Ndef.
+Rather than doing this one control at a time,
+they show how to do this in groups of elements,
+in passing discuss some typical questions that arise,
+and show how to switch the same interface between two proxies.
 
 Next files will show how to connect to JITLib GUIs,
 and why this can be useful with large multi-process setups.
+
 
 ***/
 
@@ -143,10 +148,11 @@ q.setNkProxy = { |q, proxy|
 
 q.setNkProxy(Ndef(\test)); // as before
 
-// different proxy - does nothing
+// now swotch to a different proxy - does nothing so far
 q.setNkProxy(Ndef(\test2));
 
 // make the new proxy:
+(
 Spec.add(\slope, [0.1, 1, \exp]);
 Spec.add(\formfreq, [50, 5000, \exp]);
 Spec.add(\reso, [1, 10, \exp]);
@@ -158,28 +164,17 @@ Ndef(\test2, { |freq = 2000, slope = 0.8,
 	var snd = { LFDNoise0.ar(freq * freqscale).product } ! 2;
 	RLPF.ar(snd, formfreq, 1/reso) * amp;
 }).play;
+)
 
-// and set it again now - all controls should be connected.
+// ... and set it again now - all controls should be connected.
 q.setNkProxy(Ndef(\test2));
 
 // back to first proxy:
 q.setNkProxy(Ndef(\test));
 
-// now assign rew and fwd buttons to choose
-// between \test and \test2
+
+// now assign rew and fwd buttons to switch between \test and \test2
 q.nk.at(\rew).action = { |el| q.setNkProxy(Ndef(\test)); };
 q.nk.at(\fwd).action = { |el| q.setNkProxy(Ndef(\test2)); };
 
-
-n = NdefGui(Ndef(\test), 7);
-g = NanoKtl.new;			// make a new NanoKtl
-g.mapToNdefGui(n, 1);		// and map its scene 1 to the editor n
-
-// shift by hand which params are mapped
-g.paramShift(0);	// show which params are mapped
-g.paramShift(1);	// shift by one; when hitting the end, jumps back.
-
-// test using a second proxy, NanoKtl scene 2:
-~test2 = ~test.source;
-o = NodeProxyEditor(~test2);
-g.mapToPxEdit(o, 2); // scene 2!
+// to be continued with guis 
