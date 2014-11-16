@@ -2,6 +2,7 @@
 // control a synth process
 //  1. start and stop
 //  2. set frequency
+// These features should be assigned to the two controllers that are moved next.
 
 
 
