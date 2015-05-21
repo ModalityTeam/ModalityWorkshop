@@ -3,7 +3,7 @@ s.boot;
 // get access to an MKtl. This example uses a nanoKontrol2.
 // You should be able to adapt it to your available controller quite easily.
 // For a more detailed version of this file, see
-"Tutorials/ModalityTutorial".openHelpFile
+"Tutorials/ModalityTutorial".openHelpFile;
 
 // open the MKtl
 k = MKtl('nnkn20');
@@ -19,7 +19,7 @@ SynthDef(\blippy, {
 
     sound = RLPF.ar(sound, 5000);
     Out.ar(0, Pan2.ar(sound, \pan.kr(0).lag(0.1) ) )
-}).add
+}).add;
 )
 
 (
@@ -31,6 +31,11 @@ k.reset;
 
 //knob 1 -> amplitude
 k.elementAt(\kn, 0).action_({ |el| x.set(\amp, el.value) });
+
+
+//Alternative syntax:
+k.elementAt(\kn, 0).action = { |el| x.set(\amp, el.value) };
+
 
 //knob 2 -> pan
 k.elementAt(\kn, 1).action_({ |el| x.set(\pan, el.value.linlin(0.0, 1.0, -1.0, 1.0) ) });
