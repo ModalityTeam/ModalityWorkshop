@@ -19,7 +19,7 @@ k = MKtl('nnkn20');
 k.gui;
 
 
-// open the nanoKontrol2 if you have one
+// open the nanoKontrol if you have one
 n = MKtl('nnkn0');
 // can do everything from gui if desired
 n.gui;
