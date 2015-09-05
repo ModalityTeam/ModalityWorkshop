@@ -1,3 +1,11 @@
+Paging is now supported by the PagedMKtl class,
+see esp. the first code example.
+
+PagedMKtl.openHelpFile;
+
+
+// --- this was the original sketch for paging by hand --- //
+
 // Here is a very simple apporach to using one controller
 // for several different pages of functions.
 // Doing this paging in software is more flexibl than in hardware,
