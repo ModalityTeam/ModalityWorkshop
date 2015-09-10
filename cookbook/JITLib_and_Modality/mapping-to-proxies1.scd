@@ -56,7 +56,7 @@ q.ndgui.skipjack.dt = 0.05; // faster updates
 
 
 // now make an MKtl:
-q.nk = MKtl(\nnkn20);
+q.nk = MKtl(\nk2, "korg-nanokontrol2");
 
 // map group of mktl elements to array of proxy params:
 // uses direct set method,
@@ -101,7 +101,7 @@ q.ndgui.close;
 q.ndgui = NdefGui(Ndef(\test), 8);
 q.ndgui.skipjack.dt = 0.05; // faster updates
 
-
+MKtlGUI(mktl: q.nk);
 
 
 // VARIANT 1 - SOFT TAKEOVER - with softSet and softVol_:
@@ -132,7 +132,7 @@ q.mapElemGroupToProxyParams = { |q, group, proxy, keys|
 		}
 	}
 };
-
+s.scope
 // and again, use first 7 knobs for first seven params,
 // now with softSet:
 q.mapElemGroupToProxyParams(

@@ -5,6 +5,8 @@ instance.
 
 q = q ? ();
 
+Ndef(\in, { SoundIn.ar([0, 1]) }).play;
+
 // Make the Master FX Chain first
 
 (
@@ -13,7 +15,7 @@ MasterFX.clear;
 try { q.masterFXGui.close };
 q.masterFX = MasterFX.new(server: s,
    numChannels: 4,
-   slotNames: [\hpf, \lpf, \delay, \krush, \rollClip, \adcverb, \ampFin],
+   slotNames: [\leakDC, \rollClip, \krush, \ampFin],
    busIndex: 0
 );
 q.masterFXGui = q.masterFX.gui; // a GUI
@@ -22,7 +24,8 @@ q.masterFXGui.skipjack.dt = 0.05;
 q.masterFXGui.editGui.skipjack.dt = 0.05;
 )
 
-q.nk = MKtl(\nnkn20);
+q.nk = MKtl(\nk2, "korg-nanokontrol2");
+MKtlGUI(mktl: q.nk);
 q.nk.reset;
 
 
@@ -105,6 +108,7 @@ q.mapElementsToParamsFrom = { |q, elemgroup, editGui, indexOffset = 0|
 			spec = spec ?? { editGui.paramGui.specs[paramKey] };
 			proxy.softSet(paramKey,
 				spec.map(el.value),
+				within: 0.04,
 			 lastVal: spec.map(el.prevValue));
 		}
 	};
@@ -124,7 +128,8 @@ q.mapElementsToParamsFrom(
 // get offset of its control in editKeys?
 // or maybe better - get names from the synthcontrol object,
 // and map t the names directly? hmmm, intransparent.
-'wet40'.matchOSCAddressPattern('wet*');
+// 'wet40'.matchOSCAddressPattern('wet*');
+// still to be considered how to do that best ...
 
 
 // use rightmost slider for global server volume control :

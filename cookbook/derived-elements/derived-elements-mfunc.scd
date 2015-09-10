@@ -6,7 +6,6 @@
 // Choose two Elements of a device you have at hand
 (
 a = MKtl(\a, "thrustmaster-run-n-drive");
-//b = MKtl(\b, "teenage-engineering-op-1");
 	// left joystick
 x = a.elementAt(\joy, \l, \x);
 x.action_(MFunc());
@@ -14,9 +13,10 @@ y = a.elementAt(\joy, \l, \y);
 y.action_(MFunc());
 )
 
-MKtlGUI(mktl: a)
 
-// Alternatively, instantiate virtual elements
+MKtlGUI(mktl: a);
+
+// or alternatively, make some free MKtl elements by hand:
 
 (
 x = MKtlElement(\x, (spec: [-100, 100], type: \joyAxis, ioType: \in));
@@ -24,8 +24,10 @@ x.action_(MFunc());  // use an MFunc for convenience and flexibility
 
 y = MKtlElement(\y, (spec: [-100, 100], type: \joyAxis, ioType: \in));
 y.action_(MFunc());
+)
 
-// make a Slider2D to set x and y
+// make a Slider2D to set x and y from gui
+(
 Slider2D(nil, Rect(0,0,200,200)).action_({ |sl2d|
 	x.valueAction_(sl2d.x); y.valueAction_(sl2d.y);
 }).front;
@@ -33,20 +35,19 @@ Slider2D(nil, Rect(0,0,200,200)).action_({ |sl2d|
 
 
 (
-	// logging
+	// add logging to x and y
 x.action.add(\post, { |el| [el.name, el.value].postln });
 y.action.add(\post, { |el| [el.name, el.value].postln });
 )
 
 	// disable logging
 [x, y].do { |el| el.action.disable(\post) };
-
-
-	// enable logging
+	// enable logging again
+[x, y].do { |el| el.action.enable(\post) };
 [x, y].do { |el| el.action.disable(\post) };
 
 
-// make a derived element, which converts x and y to polar angle
+// make a derived element z, which converts x and y to polar angle
 (
 z = MKtlElement(\polar, (spec: [-pi, pi], type: \xyPolar, ioType: 'filter'));
 
@@ -71,3 +72,17 @@ z.action.add(\postAtan2, { |polar|
 	"polar atan2 value: % \n".postf(polar.deviceValue);
 });
 )
+
+// use z like any MKtlelement, e.g. in a running pattern:
+// - move 2dslider while pattern plays,
+// - and watch its normalized value
+a = Pbind(\polar, z).trace.play;
+a.stop;
+
+// get the angle value from z, and use that for other things,
+// e.g. to calculate other param values with it
+a = Pbind(
+	\angle, Pfunc({ z.deviceValue }),
+	\panPos, Pkey(\angle) * 100
+).trace.play;
+a.stop;

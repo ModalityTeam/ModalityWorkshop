@@ -6,7 +6,7 @@ s.boot;
 "Tutorials/ModalityTutorial".openHelpFile;
 
 // open the MKtl
-k = MKtl('nnkn20');
+k = MKtl('nk2', "korg-nanokontrol2");
 
 // create a Synth to control
 (
@@ -47,3 +47,5 @@ k.elementAt(\sl, 0).action_({ |el| x.set(\freq, el.value.linlin(0.0, 1.0, 100, 4
 k.elementAt(\sl, 1).action_({ |el| x.set(\numHarmonics, el.value.linexp(0.0, 1.0, 5, 200) ) });
 
 )
+
+MKtlGUI(mktl: k);
