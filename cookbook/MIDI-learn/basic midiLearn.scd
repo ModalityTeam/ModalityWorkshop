@@ -9,7 +9,7 @@
 s.boot;
 s.latency = nil;
 
-m = MKtl('nnkn0'); // the MKtl
+m = MKtl('nk2', "korg-nanokontrol2"); // the MKtl
 
 
 q = (); // a place to put stuff
@@ -45,13 +45,6 @@ q[\synthCtl] = {|el|
 q.sliders = m.elementAt(\sl);
 q.buttons = m.elementAt(\bt);
 
-/**
-// for a nanoKontrol 1, go into scene 1 to get
-// the rows of sliders and buttons
-q.sliders = m.elementAt(\sl, 0);
-q.buttons = m.elementAt(\bt, 0);
-**/
-
 // this action goes to the group of elements
 // and will add the action to the first element activated:
 
@@ -77,7 +70,15 @@ q.makeLearnAction(q.buttons, q[\synthCtl], {|el| q.synthCtlElem = el});
 q.freq = 100;
 )
 
-// remove actions from the elements who learned it
+// hit one of the buttons to have it learn:
+// -> on the next push and release, it will turn a synth on and off.
+
+// next, while holding down button to play the sound,
+// move one of the sliders to have it learn:
+// -> it will now change the sound's freq parameter.
+
+
+// remove actions again from the elements who learned them:
 q. freqCtlElem.removeAction(q[ \setFreq]);
 q.synthCtlElem.removeAction(q[\synthCtl]);
 
