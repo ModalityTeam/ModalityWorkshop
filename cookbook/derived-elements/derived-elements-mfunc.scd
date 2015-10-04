@@ -13,8 +13,7 @@ y = a.elementAt(\joy, \l, \y);
 y.action_(MFunc());
 )
 
-
-MKtlGUI(mktl: a);
+a.gui;
 
 // or alternatively, make some free MKtl elements by hand:
 

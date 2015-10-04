@@ -19,8 +19,10 @@ https://github.com/ModalityTeam/ModalityWorkshop
 "Modality".openHelpFile;
 "Modality Tutorial".openHelpFile;
 
-// Fancier GUI's with (still work in progress):
-MKtlGUI( mktl: k );
+MKtl(\nk2, "korg-nanokontrol2");
+// Basic GUI showing all elements,
+// or fancy gui when layout geometry is known in desc file
+MKtl(\nk2).gui;
 
 
 // Mapping examples

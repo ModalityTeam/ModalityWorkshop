@@ -101,7 +101,7 @@ q.ndgui.close;
 q.ndgui = NdefGui(Ndef(\test), 8);
 q.ndgui.skipjack.dt = 0.05; // faster updates
 
-MKtlGUI(mktl: q.nk);
+q.nk.gui;
 
 
 // VARIANT 1 - SOFT TAKEOVER - with softSet and softVol_:

@@ -25,7 +25,7 @@ q.masterFXGui.editGui.skipjack.dt = 0.05;
 )
 
 q.nk = MKtl(\nk2, "korg-nanokontrol2");
-MKtlGUI(mktl: q.nk);
+q.nk.gui;
 q.nk.reset;
 
 

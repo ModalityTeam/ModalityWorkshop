@@ -11,11 +11,8 @@ s.latency = nil; // make sure there is no artificial latency
 
 
 m = MKtl('op1', "teenage-engineering-op-1");
-
-// basic gui to see all elements and names
+// gui to see all elements and names
 m.gui;
-// when the desc has layout info, use this:
-// MKtlGUI(mktl: m);
 (
 (
 SynthDef(\a, {|out = 0, amp = 0.25, midiNote = 50, bendFac = 0.5, res = 0, ffac = 1, gate = 1|

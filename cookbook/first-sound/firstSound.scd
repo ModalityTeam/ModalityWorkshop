@@ -8,6 +8,9 @@ s.boot;
 // open the MKtl
 k = MKtl('nk2', "korg-nanokontrol2");
 
+// make a gui for the mktl
+m.gui;
+
 // create a Synth to control
 (
 SynthDef(\blippy, {
@@ -47,5 +50,3 @@ k.elementAt(\sl, 0).action_({ |el| x.set(\freq, el.value.linlin(0.0, 1.0, 100, 4
 k.elementAt(\sl, 1).action_({ |el| x.set(\numHarmonics, el.value.linexp(0.0, 1.0, 5, 200) ) });
 
 )
-
-MKtlGUI(mktl: k);
