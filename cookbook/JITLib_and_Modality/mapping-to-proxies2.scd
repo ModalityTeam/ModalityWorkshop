@@ -39,7 +39,8 @@ Ndef(\test, { |freq=250, intv=19, timescale=1, curve=0, loopnode=0, formfact=2, 
 	Spec.add(\spread, \unipolar);
 );
 
-q.nk = MKtl(\nnkn20);
+q.nk = MKtl(\nk2, "*trol2");
+q.nkg = q.nk.gui;
 
 q.ndgui = NdefGui(Ndef(\test), 8);
 q.ndgui.skipjack.dt = 0.05; // make it update faster
@@ -55,10 +56,13 @@ q.mapElemGroupToNdefGui = { |q, group, ndefGui|
 			proxy = ndefGui.proxy;
 			if (proxy.notNil) {
 				paramKey = ndefGui.editKeys[i];
-				proxy.softSet(paramKey,
-					paramKey.asSpec.map(el.value),
-					within: 0.025,
-					lastVal: el.prevValue
+				proxy.softSet(
+					paramKey,
+					el.value,
+					within: 0.05,
+					mapped: false,
+					lastVal: el.prevValue,
+					spec: paramKey.asSpec
 				)
 			};
 		};
@@ -66,12 +70,12 @@ q.mapElemGroupToNdefGui = { |q, group, ndefGui|
 };
 
 q.mapElemGroupToNdefGui(
-	q.nk.at(\kn).keep(7),
+	q.nk.elAt(\kn).keep(7),
 	q.ndgui
 );
 
 // use last knob for volume control of current ndgui proxy:
-q.nk.at(\kn).last.action = { |el|
+q.nk.elAt(\kn).last.action = { |el|
 	q.ndgui.proxy.softVol_(\amp.asSpec.map(el.value));
 };
 // add play and stop buttons
@@ -104,8 +108,8 @@ q.ndgui.proxy_(Ndef(\test2));
 q.ndgui.proxy_(Ndef(\test));
 
 // now assign rew and fwd buttons to switch between \test and \test2
-q.nk.at(\rew).action = { |el| q.ndgui.proxy_(Ndef(\test)); };
-q.nk.at(\fwd).action = { |el| q.ndgui.proxy_(Ndef(\test2)); };
+q.nk.elAt(\rew).action = { |el| q.ndgui.proxy_(Ndef(\test)); };
+q.nk.elAt(\fwd).action = { |el| q.ndgui.proxy_(Ndef(\test2)); };
 
 
 
@@ -135,20 +139,20 @@ q.ndmix.editGui.proxy_(Ndef(\test));
 // map all controls used so far to the editGui:
 // map knobs to param controls
 q.mapElemGroupToNdefGui(
-	q.nk.at(\kn).keep(7),
+	q.nk.elAt(\kn).keep(7),
 	q.ndmix.editGui
 );
 // use last knob for volume control of current ndgui proxy:
-q.nk.at(\kn).last.action = { |el|
+q.nk.elAt(\kn).last.action = { |el|
 	q.ndmix.editGui.proxy.softVol_(\amp.asSpec.map(el.value));
 };
 // add play and stop buttons
-q.nk.at(\play).action = { |el| q.ndmix.editGui.proxy.play; };
-q.nk.at(\stop).action = { |el| q.ndmix.editGui.proxy.stop; };
+q.nk.elAt(\play).action = { |el| q.ndmix.editGui.proxy.play; };
+q.nk.elAt(\stop).action = { |el| q.ndmix.editGui.proxy.stop; };
 
 // now, map the nk sliders to the volume controls:
 // (nested checks for nil to avoid setting empty ones)
-q.nk[\sl].do { |sl, i|
+q.nk.elAt(\sl).do { |sl, i|
 	sl.action = { |el|
 		var argui, proxy;
 		argui = q.ndmix.arGuis[i];
@@ -166,7 +170,7 @@ q.nk[\sl].do { |sl, i|
 
 // now, map the nk top row of buttons
 // to send that proxy to the editGui:
-q.nk[\bt].at(0).do { |bt, i|
+q.nk.elAt(\bt).at(0).do { |bt, i|
 	bt.action = { |el|
 		var argui, proxy;
 		argui = q.ndmix.arGuis[i];

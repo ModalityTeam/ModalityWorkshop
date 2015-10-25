@@ -77,20 +77,21 @@ q.mapElemGroupToProxyParams = { |q, group, proxy, keys|
 
 // use first 7 knobs for first seven params:
 q.mapElemGroupToProxyParams(
-	q.nk.at(\kn).keep(7),
+	q.nk.elAt(\kn).keep(7),
 	Ndef(\test)
 );
 	// use last knob for volume control:
-q.nk.at(\kn).last.action = { |el|
+q.nk.elAt(\kn).last.action = { |el|
 	Ndef(\test).vol_(\amp.asSpec.map(el.value));
 };
 
 // add play and stop buttons
-q.nk.at(\play).action = { |el| Ndef(\test).play; };
-q.nk.at(\stop).action = { |el| Ndef(\test).stop; };
+q.nk.elAt(\play).action = { |el| Ndef(\test).play; };
+q.nk.elAt(\stop).action = { |el| Ndef(\test).stop; };
 
 // ... and test that all these work as intended!
 
+q.nk.gui;
 
 //NOTE - you can close the NdefGui, and connections still work,
 // because we connected directly to the Ndef itself!
@@ -107,14 +108,17 @@ q.nk.gui;
 // VARIANT 1 - SOFT TAKEOVER - with softSet and softVol_:
 // The direct set and vol_ methods above may cause a big jump
 // of the param value or volume to where the fader happens to be;
-// the softSet class and softVol method avoid this by only
+// the softSet and softVol method avoid this by only
 // doing the setting when the value is close enough,
 // or when the value is close to the last value of the
 // control element.
 
 	// use last knob for volume control:
-q.nk.at(\kn).last.action = { |el|
-	Ndef(\test).softVol_(\amp.asSpec.map(el.value));
+q.nk.elAt(\kn).last.action = { |el|
+	Ndef(\test).softVol_(
+		\amp.asSpec.map(el.value),
+		lastVal: \amp.asSpec.map(el.prevValue)
+	);
 };
 
 q.mapElemGroupToProxyParams = { |q, group, proxy, keys|
@@ -123,20 +127,23 @@ q.mapElemGroupToProxyParams = { |q, group, proxy, keys|
 		var parKey = keys[i];
 		if (parKey.notNil) {
 			el.action = {
+				var spec = parKey.asSpec;
+				"val: % prev: % diff: %\n."
+				.postf(el.value, el.prevValue);
 				proxy.softSet(parKey,
-					parKey.asSpec.map(el.value),
+					spec.map(el.value),
 					within: 0.025,
-					lastVal: el.prevValue
+					lastVal: spec.map(el.prevValue)
 				)
 			};
 		}
 	}
 };
-s.scope
+
 // and again, use first 7 knobs for first seven params,
 // now with softSet:
 q.mapElemGroupToProxyParams(
-	q.nk.at(\kn).keep(7),
+	q.nk.elAt(\kn).keep(7),
 	Ndef(\test);
 );
 
@@ -150,23 +157,23 @@ q.setNkProxy = { |q, proxy|
 
 		// use first 7 knobs for first seven params:
 		q.mapElemGroupToProxyParams(
-			q.nk.at(\kn).keep(7),
+			q.nk.elAt(\kn).keep(7),
 			q.nkProxy
 		);
 		// use last knob for volume control:
-		q.nk.at(\kn).last.action = { |el|
+		q.nk.elAt(\kn).last.action = { |el|
 			q.nkProxy.vol_(\amp.asSpec.map(el.value));
 		};
 
 		// add play and stop buttons
-		q.nk.at(\play).action = { |el| q.nkProxy.play; };
-		q.nk.at(\stop).action = { |el| q.nkProxy.stop; };
+		q.nk.elAt(\play).action = { |el| q.nkProxy.play; };
+		q.nk.elAt(\stop).action = { |el| q.nkProxy.stop; };
 	};
 };
 
 q.setNkProxy(Ndef(\test)); // as before
 
-// now swotch to a different proxy - does nothing so far
+// now switch to a different proxy - does nothing so far
 q.setNkProxy(Ndef(\test2));
 
 // make the new proxy:
@@ -182,7 +189,9 @@ Ndef(\test2, { |freq = 2000, slope = 0.8,
 	var snd = { LFDNoise0.ar(freq * freqscale).product } ! 2;
 	RLPF.ar(snd, formfreq, 1/reso) * amp;
 }).play;
+Ndef(\test2).gui;
 )
+
 
 // ... and set it again now - all controls should be connected.
 q.setNkProxy(Ndef(\test2));
@@ -191,13 +200,9 @@ q.setNkProxy(Ndef(\test2));
 q.setNkProxy(Ndef(\test));
 
 // now assign rew and fwd buttons to switch between \test and \test2
-q.nk.at(\rew).action = { |el| q.setNkProxy(Ndef(\test)); };
-q.nk.at(\fwd).action = { |el| q.setNkProxy(Ndef(\test2)); };
+q.nk.elAt(\rew).action = { |el| q.setNkProxy(Ndef(\test)); };
+q.nk.elAt(\fwd).action = { |el| q.setNkProxy(Ndef(\test2)); };
 
-// to be continued with guis
+// continued with more complex guis:
+// see mapping-to-proxies-2 !
 
-
-// a visual interface for all Ndefs
-q.ndmx = NdefMixer(s, 10);
-// put the first Ndef in the NdefGui on right hand side
-q.ndmx.arGuis.first.edBut.valueAction_(1);

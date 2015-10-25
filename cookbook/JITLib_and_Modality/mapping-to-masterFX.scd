@@ -118,7 +118,8 @@ q.mapElementsToParamsFrom = { |q, elemgroup, editGui, indexOffset = 0|
 q.mapElementsToParamsFrom(
 	q.nk.elementAt(\kn),
 	q.masterFXGui.editGui,
-3);
+	3
+);
 
 // now button M should jump knobs to the controls of that effect...
 // hmmm, that only works when that effect is on!
