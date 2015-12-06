@@ -43,25 +43,26 @@ Ndef( \sound2 ).addHalo(\sl2Param, \freq1);
 );
 
 // the MKtl: an iControls ...
-k = MKtl( 'cncn2000' );
+k = MKtl( 'icon', "*icontrols" );
 /// or a nanoKontrol 2
-k = MKtl( 'nnkn20' );
+k = MKtl( 'nk2', "*kontrol2");
+k.gui;
 
-Ndef( \sound1).play;
+Ndef( \sound1).play(0.25);
 Ndef( \sound1).gui;  // to see params change
 
 // setting the continuous controls:
 (
 // sl 0 can set one param each of sound1 and sound2
-k.elementAt( \sl, 0 ).action = MFunc.new;
-k.elementAt( \sl, 0 ).action.add( \debug, { |mktel|
+k.elAt( \sl, 0 ).action = MFunc.new;
+k.elAt( \sl, 0 ).action.add( \trace, { |mktel|
 	"sl0 ".post; mktel.value.postln;
 } );
-k.elementAt( \sl, 0 ).action.add( \sl1Sound1, { |mktel|
+k.elAt( \sl, 0 ).action.add( \sl1Sound1, { |mktel|
 	var ctlName = Ndef( \sound1 ).getHalo(\sl1Param);
 	Ndef( \sound1 ).setUni( ctlName, mktel.value )
 });
-k.elementAt( \sl, 0 ).action.add( \sl1Sound2, { |mktel|
+k.elAt( \sl, 0 ).action.add( \sl1Sound2, { |mktel|
 	var ctlName = Ndef( \sound2 ).getHalo(\sl1Param);
 	Ndef( \sound2 ).setUni( ctlName, mktel.value )
 });
@@ -70,15 +71,15 @@ k.elementAt( \sl, 0 ).action.add( \sl1Sound2, { |mktel|
 (
 // sl 1 can also set one param each of sound1 and sound2
 
-k.elementAt( \sl, 1 ).action = MFunc.new;
-k.elementAt( \sl, 1 ).action.add( \debug, { |mktel|
+k.elAt( \sl, 1 ).action = MFunc.new;
+k.elAt( \sl, 1 ).action.add( \trace, { |mktel|
 	"sl1 ".post; mktel.value.postln;
 } );
-k.elementAt( \sl, 1 ).action.add( \sl2Sound1, { |mktel|
+k.elAt( \sl, 1 ).action.add( \sl2Sound1, { |mktel|
 	var ctlName = Ndef( \sound1 ).getHalo(\sl2Param);
 	Ndef( \sound1 ).setUni( ctlName, mktel.value );
 });
-k.elementAt( \sl, 1 ).action.add( \sl2Sound2, { |mktel|
+k.elAt( \sl, 1 ).action.add( \sl2Sound2, { |mktel|
 	var ctlName = Ndef( \sound2 ).getHalo(\sl2Param);
 	Ndef( \sound2 ).setUni( ctlName, mktel.value );
 });
@@ -92,28 +93,28 @@ Ndef( \sound2).gui;  // to see params change
 // starting and stopping the ndefs, by toggling,
 // use leftmost 2 buttons, middle row:
 (
-k.elementAt( \bt, 1, 0 ).action = MFunc.new;
-k.elementAt( \bt, 1, 0 ).action.add( \debug, { |mktel| "b1,0 ".post; mktel.value.postln; } );
-k.elementAt( \bt, 1, 0 ).action.add( \togglePlay, { |mktel|
+k.elAt( \bt, 1, 0 ).action = MFunc.new;
+k.elAt( \bt, 1, 0 ).action.add( \trace, { |mktel| "b1,0 ".post; mktel.value.postln; } );
+k.elAt( \bt, 1, 0 ).action.add( \togglePlay, { |mktel|
 	if ( mktel.value == 1 ){ // only when pressed
 		if ( Ndef( \sound1 ).monitor.isPlaying ){
 			Ndef( \sound1 ).stop;
 			// disable controls
-			k.elementAt( \sl, 0 ).action.disable( \sl1Sound1 );
-			k.elementAt( \sl, 1 ).action.disable( \sl2Sound1 );
+			k.elAt( \sl, 0 ).action.disable( \sl1Sound1 );
+			k.elAt( \sl, 1 ).action.disable( \sl2Sound1 );
 		}{ Ndef( \sound1 ).play }
 	};
 } );
 
-k.elementAt( \bt, 1, 1 ).action = MFunc.new;
-k.elementAt( \bt, 1, 1 ).action.add( \debug, { |mktel| "b1,1 ".post; mktel.value.postln; } );
-k.elementAt( \bt, 1, 1 ).action.add( \togglePlay, { |mktel|
+k.elAt( \bt, 1, 1 ).action = MFunc.new;
+k.elAt( \bt, 1, 1 ).action.add( \trace, { |mktel| "b1,1 ".post; mktel.value.postln; } );
+k.elAt( \bt, 1, 1 ).action.add( \togglePlay, { |mktel|
 	if ( mktel.value == 1 ){ // only when pressed
 		if ( Ndef( \sound2 ).monitor.isPlaying ){
 			Ndef( \sound2 ).stop;
 			// disable controls
-			k.elementAt( \sl, 0 ).action.disable( \sl1Sound2 );
-			k.elementAt( \sl, 1 ).action.disable( \sl2Sound2 );
+			k.elAt( \sl, 0 ).action.disable( \sl1Sound2 );
+			k.elAt( \sl, 1 ).action.disable( \sl2Sound2 );
 		}{ Ndef( \sound2 ).play }
 	};
 } );
@@ -121,17 +122,17 @@ k.elementAt( \bt, 1, 1 ).action.add( \togglePlay, { |mktel|
 
 // just enable controls for sound1 when top button of column 0 is pressed:
 (
-k.elementAt( \bt, 0, 0 ).action = MFunc.new;
-k.elementAt( \bt, 0, 0 ).action.add( \debug, { |mktel| "b0,0 ".post; mktel.value.postln; } );
-k.elementAt( \bt, 0, 0 ).action.add( \togglePlay, { |mktel|
+k.elAt( \bt, 0, 0 ).action = MFunc.new;
+k.elAt( \bt, 0, 0 ).action.add( \trace, { |mktel| "b0,0 ".post; mktel.value.postln; } );
+k.elAt( \bt, 0, 0 ).action.add( \togglePlay, { |mktel|
 	if ( Ndef( \sound1 ).monitor.isPlaying ){
 		if ( mktel.value == 1 ){ // only when pressed
-			k.elementAt( \sl, 0 ).action.enable( \sl1Sound1 );
-			k.elementAt( \sl, 1 ).action.enable( \sl2Sound1 );
+			k.elAt( \sl, 0 ).action.enable( \sl1Sound1 );
+			k.elAt( \sl, 1 ).action.enable( \sl2Sound1 );
 		}{
 			// disable controls
-			k.elementAt( \sl, 0 ).action.disable( \sl1Sound1 );
-			k.elementAt( \sl, 1 ).action.disable( \sl2Sound1 );
+			k.elAt( \sl, 0 ).action.disable( \sl1Sound1 );
+			k.elAt( \sl, 1 ).action.disable( \sl2Sound1 );
 		};
 	};
 } );
@@ -139,40 +140,40 @@ k.elementAt( \bt, 0, 0 ).action.add( \togglePlay, { |mktel|
 
 // same for sound2 and column 1
 (
-k.elementAt( \bt, 0, 1 ).action = MFunc.new;
-k.elementAt( \bt, 0, 1 ).action.add( \debug, { |mktel| "b0, 1 ".post; mktel.value.postln; } );
-k.elementAt( \bt, 0, 1 ).action.add( \togglePlay, { |mktel|
+k.elAt( \bt, 0, 1 ).action = MFunc.new;
+k.elAt( \bt, 0, 1 ).action.add( \trace, { |mktel| "b0, 1 ".post; mktel.value.postln; } );
+k.elAt( \bt, 0, 1 ).action.add( \togglePlay, { |mktel|
 	if ( Ndef( \sound2 ).monitor.isPlaying ){
 		if ( mktel.value == 1 ){ // only when pressed
-			k.elementAt( \sl, 0 ).action.enable( \sl1Sound2 );
-			k.elementAt( \sl, 1 ).action.enable( \sl2Sound2 );
+			k.elAt( \sl, 0 ).action.enable( \sl1Sound2 );
+			k.elAt( \sl, 1 ).action.enable( \sl2Sound2 );
 		}{
 			// disable controls
-			k.elementAt( \sl, 0 ).action.disable( \sl1Sound2 );
-			k.elementAt( \sl, 1 ).action.disable( \sl2Sound2 );
+			k.elAt( \sl, 0 ).action.disable( \sl1Sound2 );
+			k.elAt( \sl, 1 ).action.disable( \sl2Sound2 );
 		};
 	};
 } );
 );
 
 (
-// after testing, disable the debug actions:
-k.elementAt( \bt, 0, 0 ).action.disable( \debug );
-k.elementAt( \bt, 1, 0 ).action.disable( \debug );
-k.elementAt( \bt, 0, 1 ).action.disable( \debug );
-k.elementAt( \bt, 1, 1 ).action.disable( \debug );
-k.elementAt( \sl, 0 ).action.disable( \debug );
-k.elementAt( \sl, 1 ).action.disable( \debug );
+// after testing, disable the trace actions:
+k.elAt( \bt, 0, 0 ).action.disable( \trace );
+k.elAt( \bt, 1, 0 ).action.disable( \trace );
+k.elAt( \bt, 0, 1 ).action.disable( \trace );
+k.elAt( \bt, 1, 1 ).action.disable( \trace );
+k.elAt( \sl, 0 ).action.disable( \trace );
+k.elAt( \sl, 1 ).action.disable( \trace );
 );
 
 
 //////////////// variants : ////////////
 // - only play when play/stop button is pressed
 (
-k.elementAt( \bt, 1, 0 ).action = MFunc.new;
-k.elementAt( \bt, 1, 0 ).action.add( \debug, { |mktel| "b1,0 ".post;
+k.elAt( \bt, 1, 0 ).action = MFunc.new;
+k.elAt( \bt, 1, 0 ).action.add( \trace, { |mktel| "b1,0 ".post;
 mktel.value.postln; } );
-k.elementAt( \bt, 1, 0 ).action.add( \togglePlay, { |mktel|
+k.elAt( \bt, 1, 0 ).action.add( \togglePlay, { |mktel|
 	if ( mktel.value == 1 ){
 		Ndef( \sound1 ).play
 	}{
@@ -180,10 +181,10 @@ k.elementAt( \bt, 1, 0 ).action.add( \togglePlay, { |mktel|
 	}
 } );
 
-k.elementAt( \bt, 1, 1 ).action = MFunc.new;
-k.elementAt( \bt, 1, 1 ).action.add( \debug, { |mktel| "b1,1 ".post;
+k.elAt( \bt, 1, 1 ).action = MFunc.new;
+k.elAt( \bt, 1, 1 ).action.add( \trace, { |mktel| "b1,1 ".post;
 mktel.value.postln; } );
-k.elementAt( \bt, 1, 1 ).action.add( \togglePlay, { |mktel|
+k.elAt( \bt, 1, 1 ).action.add( \togglePlay, { |mktel|
 	if ( mktel.value == 1 ){
 		Ndef( \sound2 ).play
 	}{
@@ -197,31 +198,31 @@ k.elementAt( \bt, 1, 1 ).action.add( \togglePlay, { |mktel|
 // when pressed, sound1, when up, sound2
 
 (
-k.elementAt( \bt, 1, 2 ).action = MFunc.new;
-k.elementAt( \bt, 1, 2 ).action.add( \debug, { |mktel| "b1,2 ".post;
+k.elAt( \bt, 1, 2 ).action = MFunc.new;
+k.elAt( \bt, 1, 2 ).action.add( \trace, { |mktel| "b1,2 ".post;
 mktel.value.postln; } );
-k.elementAt( \bt, 1, 2 ).action.add( \toggleSliders, { |mktel|
+k.elAt( \bt, 1, 2 ).action.add( \toggleSliders, { |mktel|
 	if ( mktel.value == 1 ){
-		k.elementAt( \sl, 0 ).action.enable( \sl1Sound1 );
-		k.elementAt( \sl, 1 ).action.enable( \sl2Sound1 );
-		k.elementAt( \sl, 0 ).action.disable( \sl1Sound2 );
-		k.elementAt( \sl, 1 ).action.disable( \sl2Sound2 );
+		k.elAt( \sl, 0 ).action.enable( \sl1Sound1 );
+		k.elAt( \sl, 1 ).action.enable( \sl2Sound1 );
+		k.elAt( \sl, 0 ).action.disable( \sl1Sound2 );
+		k.elAt( \sl, 1 ).action.disable( \sl2Sound2 );
 	}{
-		k.elementAt( \sl, 0 ).action.disable( \sl1Sound1 );
-		k.elementAt( \sl, 1 ).action.disable( \sl2Sound1 );
-		k.elementAt( \sl, 0 ).action.enable( \sl1Sound2 );
-		k.elementAt( \sl, 1 ).action.enable( \sl2Sound2 );
+		k.elAt( \sl, 0 ).action.disable( \sl1Sound1 );
+		k.elAt( \sl, 1 ).action.disable( \sl2Sound1 );
+		k.elAt( \sl, 0 ).action.enable( \sl1Sound2 );
+		k.elAt( \sl, 1 ).action.enable( \sl2Sound2 );
 	};
 } );
 
 // starting condition - as if pressed
-k.elementAt( \sl, 0 ).action.enable( \sl1Sound1 );
-k.elementAt( \sl, 1 ).action.enable( \sl2Sound1 );
-k.elementAt( \sl, 0 ).action.disable( \sl1Sound2 );
-k.elementAt( \sl, 1 ).action.disable( \sl2Sound2 );
+k.elAt( \sl, 0 ).action.enable( \sl1Sound1 );
+k.elAt( \sl, 1 ).action.enable( \sl2Sound1 );
+k.elAt( \sl, 0 ).action.disable( \sl1Sound2 );
+k.elAt( \sl, 1 ).action.disable( \sl2Sound2 );
 
 /* ////  or initialize this by using the action:
-  k.elementAt( \sl, 0 ).doAction;
+  k.elAt( \sl, 0 ).doAction;
 */
 
 );

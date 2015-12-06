@@ -43,9 +43,10 @@ Ndef( \sound2 ).addHalo(\sl2Param, \freq1);
 );
 
 // the MKtl: an iControls ...
-k = MKtl( 'cncn2000' );
+k = MKtl( 'icon', "*icontrols" );
 /// or a nanoKontrol 2
-k = MKtl( 'nnkn20' );
+k = MKtl( 'nk2', "*kontrol2");
+k.gui;
 
 Ndef( \sound1).play;
 Ndef( \sound1).gui;  // to see params change
@@ -72,11 +73,11 @@ q.setNdefParam(Ndef( \sound1 ), \sl2Param, 0.5);
 
 (
 // now make functions for sl 0
-q.sl0 = k.elementAt( \sl, 0 );
+q.sl0 = k.elAt( \sl, 0 );
 q.sl0.action = MFunc.new;
 
 // slider posts value
-q.sl0.action.add( \debug, { |el| "sl0 ".post; el.value.postln; });
+q.sl0.action.add( \trace, { |el| "sl_1 ".post; el.value.postln; });
 // the set action for param 1
 q.sl0.action.add( \sound1, { |mktel|
 	q.setNdefParam(Ndef( \sound1 ), \sl1Param, mktel.value);
@@ -88,12 +89,12 @@ q.sl0.action.add( \sound2, { |mktel|
 
 (
 // same for sl1, with alternative syntax:
-q.sl1 = k.elementAt( \sl, 1 );
+q.sl1 = k.elAt( \sl, 1 );
 
 q.sl1.action = MFunc([
-	// avoid copy pasting debug texts which may be confusing
+	// avoid copy pasting trace texts which may be confusing
 	// by using postf and getting element name from element
-	\debug, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
+	\trace, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
 	\sound1, { |mktel|
 		q.setNdefParam(Ndef( \sound1 ), \sl2Param, mktel.value);
  	},
@@ -111,7 +112,7 @@ Ndef( \sound2).gui;  // to see params change
 // make a toggle function for Ndefs first :
 
 q.togglePlay = { |q, ndef|
-	var wasOn = ndef.monitor.isPlaying ;
+	var wasOn = ndef.monitor.isPlaying;
 	if (wasOn){ ndef.stop; } { ndef.play };
 	// return resulting playState in case you need it
 	wasOn.not
@@ -122,13 +123,13 @@ q.togglePlay (Ndef(\sound1));
 
 // now, which buttons to use ?
 // on a nanoKontrol 2, the two track buttons "<"  ">" seem good:
-k.printElementNames
+k.postElements
 
 // they are called \tleft and tright ...
 (
-q.playBt0 = k.elementAt( \tleft );
+q.playBt0 = k.elAt( \tr, \tleft );
 q.playBt0.action = MFunc([
- 	\debug, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
+ 	\trace, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
 	\togglePlay, { |mktel|
 			// toggle on pressdown
  		if ( mktel.value == 1 ){
@@ -137,9 +138,9 @@ q.playBt0.action = MFunc([
 	}
 ]);
 
-q.playBt1 = k.elementAt( \tright );
+q.playBt1 = k.elAt( \tr, \tright );
 q.playBt1.action = MFunc([
- 	\debug, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
+ 	\trace, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
 	\togglePlay, { |mktel|
 			// toggle on pressdown
 		if ( mktel.value == 1 ){
@@ -155,11 +156,11 @@ q.playBt1.action = MFunc([
 // use buttons << and >>, called rew and fwd.
 
 (
-q.enableBut0 = k.elementAt( \rew );
+q.enableBut0 = k.elAt( \tr, \rew );
 q.enableBut0.action = MFunc([
-	// avoid copy pasting debug texts which may be confusing
+	// avoid copy pasting trace texts which may be confusing
 	// by using postf and getting element name from element
-	\debug, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
+	\trace, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
 	\togKtl, { |mktel|
 		if ( mktel.value == 1 ){
 			q.sl0.action.enable( \sound1 );
@@ -175,9 +176,9 @@ q.enableBut0.action = MFunc([
 
 // same for sound2 and right >> button
 (
-q.enableBut1 = k.elementAt( \fwd );
+q.enableBut1 = k.elAt( \tr, \fwd );
 q.enableBut1.action = MFunc([
-	\debug, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
+	\trace, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
 	\togKtl, { |mktel|
 		if ( mktel.value == 1 ){
 			q.sl0.action.enable( \sound2 );
@@ -193,13 +194,13 @@ q.enableBut1.action = MFunc([
 
 
 (
-// when done testing, disable all the debug actions:
-q.sl0.action.disable( \debug );
-q.sl1.action.disable( \debug );
-q.playBt0.action.disable( \debug );
-q.playBt1.action.disable( \debug );
-q.enableBut0.action.disable( \debug );
-q.enableBut1.action.disable( \debug );
+// when done testing, disable all the trace actions:
+q.sl0.action.disable( \trace );
+q.sl1.action.disable( \trace );
+q.playBt0.action.disable( \trace );
+q.playBt1.action.disable( \trace );
+q.enableBut0.action.disable( \trace );
+q.enableBut1.action.disable( \trace );
 );
 
 
@@ -222,17 +223,17 @@ q.playBt1.action.add( \togglePlay, { |mktel|
 // - use marker-set button to toggle whether sliders go to sound1 or sound2
 
 (
-q.togSlBut = k.elementAt( \mset);
+q.togSlBut = k.elAt( \tr, \mset);
 
  // when up, sound1, when down, sound2
 q.togSlBut.action = MFunc([
-	\debug, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
+	\trace, { |mktel| "% %\n".postf(mktel.name, mktel.value); },
 	\togKtl, { |mktel|
 		if ( mktel.value == 0 ){
-			q.sl0.action.enable( \sound1 ).disable( \sound2 );
+			q.sl0.action.enable( \sound1.postcs ).disable( \sound2 );
 			q.sl1.action.enable( \sound1 ).disable( \sound2 );
 		}{
-			q.sl0.action.disable( \sound1 ).enable( \sound2 );
+			q.sl0.action.disable( \sound1 ).enable( \sound2.postcs );
 			q.sl1.action.disable( \sound1 ).enable( \sound2 );
 		};
 	}
@@ -245,15 +246,15 @@ q.togSlBut.action = MFunc([
 
 
 /* actually switching between sound1 or sound2 is an example of a
-   mode of excvlusive alternatives, and MFunc has a really simple
-   and elegant way of providing this:
+   mode of exclusive alternatives, and MFunc provides a simple
+   and elegant way to do this:
 */
 
 // declare a named  list of mutually exclusive modes
 q.sl0.action.makeExclusiveModes(\sounds_excl, [\sound1, \sound2]);
 
 // and switch between them by name
-// - note that this leaves e.g. \debug untouched.
+// - note that this leaves e.g. \trace untouched.
 q.sl0.action.mode_(\sound1);
 q.sl0.action.mode_(\sound2);
 
@@ -279,4 +280,4 @@ q.togSlBut.action.add(\togKtl, { |mktel|
 
 // and now feel free to extend this with more controls!
 // also, check out the MPD18 use case in ModalityStuff
-// for an example with more complex modes !
+// for an example with more complex modes.
