@@ -6,21 +6,20 @@
 (~basePath +/+ "0_installing.scd").openDocument;
 
 // finding and defining devices:
-(~basePath +/+ "finding_and_defining_devices_hid.scd").openDocument;
-(~basePath +/+ "finding_and_defining_devices_midi.scd").openDocument;
+(~basePath +/+ "1_finding_and_defining_devices_hid.scd").openDocument;
+(~basePath +/+ "1_finding_and_defining_devices_midi.scd").openDocument;
 
 // exploring elements and actions:
-(~basePath +/+ "elements_and_actions_hid.scd").openDocument;
-(~basePath +/+ "elements_and_actions_midi.scd").openDocument;
+(~basePath +/+ "2_elements_and_actions_hid.scd").openDocument;
+(~basePath +/+ "2_elements_and_actions_midi.scd").openDocument;
 
 // using ndefs:
-(~basePath +/+ "using_ndefs_hid.scd").openDocument;
-(~basePath +/+ "using_ndefs_midi.scd").openDocument;
+(~basePath +/+ "3_using_ndefs_hid.scd").openDocument;
+(~basePath +/+ "3_using_ndefs_midi.scd").openDocument;
 
 
-// some shared sound processes:
-// on OSX only:
-unixCmd("open" + (~basePath +/+ "shared_processes"));
+// some shared sound processes
+(~basePath +/+ "shared_processes").openOS;
 
 (~basePath +/+ "shared_processes/*").pathMatch.collect(_.basename).postcs;
 (~basePath +/+ "shared_processes/*").pathMatch.choose.openDocument;
@@ -31,10 +30,8 @@ unixCmd("open" + (~basePath +/+ "shared_processes"));
 
 // ... you are welcome to share your own sound processes here!
 
-
 // some more modal functionality using MFunc:
-(~basePath +/+ "modal_functionality_2_hid.scd").openDocument;
-(~basePath +/+ "modal_functionality_2_midi.scd").openDocument;
-(~basePath +/+ "modal_functions_2b_midi.scd").openDocument;
-
+(~basePath +/+ "5_modal_functionality_2_hid.scd").openDocument;
+(~basePath +/+ "5_modal_functionality_2_midi.scd").openDocument;
+(~basePath +/+ "5_modal_functions_2b_midi.scd").openDocument;
 
