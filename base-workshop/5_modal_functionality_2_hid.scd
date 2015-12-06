@@ -34,63 +34,67 @@ Ndef( \sound2 ).addHalo(\xParam1, \freq2);
 Ndef( \sound2 ).addSpec(\dens, [3, 3000, \exp]);
 Ndef( \sound2 ).addSpec(\freq1, [300, 2500, \exp]);
 Ndef( \sound2 ).addSpec(\freq2, [1500, 3500, \exp]);
+
+Ndef( \sound1 ).gui;
+Ndef( \sound2 ).gui;
+
 );
 
 // the MKtl:
-k = MKtl( 'rnnd0' );
+k = MKtl( 'myGP', "*drive");
 
 // setting the continuous controls:
 (
-k.elementAt( \joy, \l, \x ).action = MFunc.new;
-k.elementAt( \joy, \l, \x ).action.add( \debug, { |mktel| "joy,x,l, ".post; mktel.value.postln; } );
-k.elementAt( \joy, \l, \x ).action.add( \xSound1, { |mktel|
+k.elAt( \joy, \l, \x ).action = MFunc.new;
+k.elAt( \joy, \l, \x ).action.add( \trace, { |elem| "joy,x,l, ".post; elem.value.postln; } );
+k.elAt( \joy, \l, \x ).action.add( \xSound1, { |elem|
 	var ctlName = Ndef( \sound1 ).getHalo(\xParam);
-	Ndef( \sound1 ).setUni( ctlName, mktel.value );
+	Ndef( \sound1 ).setUni( ctlName, elem.value );
 });
-k.elementAt( \joy, \l, \x ).action.add( \xSound2, { |mktel|
+k.elAt( \joy, \l, \x ).action.add( \xSound2, { |elem|
 	var ctlName = Ndef( \sound2 ).getHalo(\xParam);
-	Ndef( \sound2 ).setUni( ctlName, mktel.value );
+	Ndef( \sound2 ).setUni( ctlName, elem.value );
 });
 );
 
 (
-k.elementAt( \joy, \l, \y ).action = MFunc.new;
-k.elementAt( \joy, \l, \y ).action.add( \debug, { |mktel| "joy,y,l, ".post; mktel.value.postln; } );
-k.elementAt( \joy, \l, \y ).action.add( \ySound1, { |mktel|
+k.elAt( \joy, \l, \y ).action = MFunc.new;
+k.elAt( \joy, \l, \y ).action.add( \trace, { |elem| "joy,y,l, ".post; elem.value.postln; } );
+k.elAt( \joy, \l, \y ).action.add( \ySound1, { |elem|
 	var ctlName = Ndef( \sound1 ).getHalo(\yParam);
-	Ndef( \sound1 ).setUni( ctlName, mktel.value );
+	Ndef( \sound1 ).setUni( ctlName, elem.value );
 });
-k.elementAt( \joy, \l, \y ).action.add( \ySound2, { |mktel|
+k.elAt( \joy, \l, \y ).action.add( \ySound2, { |elem|
 	var ctlName = Ndef( \sound2 ).getHalo(\yParam);
-	Ndef( \sound2 ).setUni( ctlName, mktel.value );
+	Ndef( \sound2 ).setUni( ctlName, elem.value );
 });
 
 );
 
 // starting and stopping the ndefs:
 (
-k.elementAt( \bt, 7 ).action = MFunc.new;
-k.elementAt( \bt, 7 ).action.add( \debug, { |mktel| "b7 ".post; mktel.value.postln; } );
-k.elementAt( \bt, 7 ).action.add( \togglePlay, { |mktel|
-	if ( mktel.value == 1 ){ // only when pressed
+k.elAt( \bt, \7 ).action = MFunc.new;
+k.elAt( \bt, \7 ).action.add( \trace, { |elem| "b7 ".post; elem.value.postln; } );
+k.elAt( \bt, \7 ).action.add( \togglePlay, { |elem|
+	if ( elem.value > 0 ){ // only when pressed
 		if ( Ndef( \sound1 ).monitor.isPlaying ){
 			Ndef( \sound1 ).stop;
 			// disable controls
-			k.elementAt( \joy, \l, \x ).action.disable( \xSound1 );
-			k.elementAt( \joy, \l, \y ).action.disable( \ySound1 );
+			k.elAt( \joy, \l, \x ).action.disable( \xSound1 );
+			k.elAt( \joy, \l, \y ).action.disable( \ySound1 );
 		}{ Ndef( \sound1 ).play }
 	};
 } );
 
-k.elementAt( \bt, 8 ).action = MFunc.new;
-k.elementAt( \bt, 8 ).action.add( \debug, { |mktel| "b8 ".post; mktel.value.postln; } );
-k.elementAt( \bt, 8 ).action.add( \togglePlay, { |mktel|
-	if ( mktel.value == 1 ){ // only when pressed
+k.elAt( \bt, \8 ).action = MFunc.new;
+k.elAt( \bt, \8 ).action.add( \trace, { |elem| "b8 ".post; elem.value.postln; } );
+k.elAt( \bt, \8 ).action.add( \togglePlay, { |elem|
+	if ( elem.value == 1 ){ // only when pressed
 		if ( Ndef( \sound2 ).monitor.isPlaying ){
 			Ndef( \sound2 ).stop;
 			// disable controls
-			k.elementAt( \joy, \l, \x ).action.disable( \xSound2 );
-			k.elementAt( \joy, \l, \y ).action.disable( \ySound2 );
+			k.elAt( \joy, \l, \x ).action.disable( \xSound2 );
+			k.elAt( \joy, \l, \y ).action.disable( \ySound2 );
 		}{ Ndef( \sound2 ).play }
 	};
 } );
@@ -98,94 +102,93 @@ k.elementAt( \bt, 8 ).action.add( \togglePlay, { |mktel|
 
 // just enable controls when button pressed:
 (
-k.elementAt( \bt, 5 ).action = MFunc.new;
-k.elementAt( \bt, 5 ).action.add( \debug, { |mktel| "b5 ".post; mktel.value.postln; } );
-k.elementAt( \bt, 5 ).action.add( \togglePlay, { |mktel|
+k.elAt( \bt, \5 ).action = MFunc.new;
+k.elAt( \bt, \5 ).action.add( \trace, { |elem| "b5 ".post; elem.value.postln; } );
+k.elAt( \bt, \5 ).action.add( \togglePlay, { |elem|
 	if ( Ndef( \sound1 ).monitor.isPlaying ){
-		if ( mktel.value == 1 ){ // only when pressed
-			k.elementAt( \joy, \l, \x ).action.enable( \xSound1 );
-			k.elementAt( \joy, \l, \y ).action.enable( \ySound1 );
+		if ( elem.value == 1 ){ // only when pressed
+			k.elAt( \joy, \l, \x ).action.enable( \xSound1 );
+			k.elAt( \joy, \l, \y ).action.enable( \ySound1 );
 		}{
 			// disable controls
-			k.elementAt( \joy, \l, \x ).action.disable( \xSound1 );
-			k.elementAt( \joy, \l, \y ).action.disable( \ySound1 );
+			k.elAt( \joy, \l, \x ).action.disable( \xSound1 );
+			k.elAt( \joy, \l, \y ).action.disable( \ySound1 );
 		};
 	};
 } );
 );
 
 (
-k.elementAt( \bt, 6 ).action = MFunc.new;
-k.elementAt( \bt, 6 ).action.add( \debug, { |mktel| "b6 ".post; mktel.value.postln; } );
-k.elementAt( \bt, 6 ).action.add( \togglePlay, { |mktel|
+k.elAt( \bt, \6 ).action = MFunc.new;
+k.elAt( \bt, \6 ).action.add( \trace, { |elem| "b6 ".post; elem.value.postln; } );
+k.elAt( \bt, \6 ).action.add( \togglePlay, { |elem|
 	if ( Ndef( \sound2 ).monitor.isPlaying ){
-		if ( mktel.value == 1 ){ // only when pressed
-			k.elementAt( \joy, \l, \x ).action.enable( \xSound2 );
-			k.elementAt( \joy, \l, \y ).action.enable( \ySound2 );
+		if ( elem.value == 1 ){ // only when pressed
+			k.elAt( \joy, \l, \x ).action.enable( \xSound2 );
+			k.elAt( \joy, \l, \y ).action.enable( \ySound2 );
 		}{
 			// disable controls
-			k.elementAt( \joy, \l, \x ).action.disable( \xSound2 );
-			k.elementAt( \joy, \l, \y ).action.disable( \ySound2 );
+			k.elAt( \joy, \l, \x ).action.disable( \xSound2 );
+			k.elAt( \joy, \l, \y ).action.disable( \ySound2 );
 		};
 	};
 } );
 );
 
 (
-// after testing, disable the debug action:
-k.elementAt( \bt, 5 ).action.disable( \debug );
-k.elementAt( \bt, 6 ).action.disable( \debug );
-k.elementAt( \bt, 7 ).action.disable( \debug );
-k.elementAt( \bt, 8 ).action.disable( \debug );
-k.elementAt( \joy, \l, \x ).action.disable( \debug );
-k.elementAt( \joy, \l, \y ).action.disable( \debug );
+// after testing, disable the trace action:
+k.elAt( \bt, \5 ).action.disable( \trace );
+k.elAt( \bt, \6 ).action.disable( \trace );
+k.elAt( \bt, \7 ).action.disable( \trace );
+k.elAt( \bt, \8 ).action.disable( \trace );
+k.elAt( \joy, \l, \x ).action.disable( \trace );
+k.elAt( \joy, \l, \y ).action.disable( \trace );
 );
 
-//toggle slider functionatlity
+// only play sound when buttons 7 or 8 are pressed
 (
-k.elementAt( \bt, 7 ).action = MFunc.new;
-k.elementAt( \bt, 7 ).action.add( \debug, { |mktel| "b1,0 ".post;
-mktel.value.postln; } );
-k.elementAt( \bt, 7 ).action.add( \togglePlay, { |mktel|
-	if ( mktel.value == 1 ){
+k.elAt( \bt, \7 ).action = MFunc.new;
+k.elAt( \bt, \7 ).action.add( \trace, { |elem| "b1, 0 ".post; elem.value.postln; } );
+k.elAt( \bt, \7 ).action.add( \togglePlay, { |elem|
+	if ( elem.value > 0 ){
 		Ndef( \sound1 ).play
 	}{
 		Ndef( \sound1 ).stop;
 	}
 } );
 
-k.elementAt( \bt, 8 ).action = MFunc.new;
-k.elementAt( \bt, 8 ).action.add( \debug, { |mktel| "b1,1 ".post;
-mktel.value.postln; } );
-k.elementAt( \bt, 8 ).action.add( \togglePlay, { |mktel|
-	if ( mktel.value == 1 ){
+k.elAt( \bt, \8 ).action = MFunc.new;
+k.elAt( \bt, \8 ).action.add( \trace, { |elem| "b1,1 ".post;
+elem.value.postln; } );
+k.elAt( \bt, \8 ).action.add( \togglePlay, { |elem|
+	if ( elem.value > 0 ){
 		Ndef( \sound2 ).play
 	}{
 		Ndef( \sound2 ).stop;
 	}
 } );
 
-k.elementAt( \bt, 9 ).action = MFunc.new;
-k.elementAt( \bt, 9 ).action.add( \debug, { |mktel| "b1,2 ".post;
-mktel.value.postln; } );
-k.elementAt( \bt, 9 ).action.add( \toggleSliders, { |mktel|
-	if ( mktel.value == 1 ){
-		k.elementAt( \joy, \l, \x ).action.enable( \xSound1 );
-		k.elementAt( \joy, \l, \y ).action.enable( \ySound1 );
-		k.elementAt( \joy, \l, \x ).action.disable( \xSound2 );
-		k.elementAt( \joy, \l, \y ).action.disable( \ySound2 );
+k.elAt( \bt, \9 ).action = MFunc.new;
+k.elAt( \bt, \9 ).action.add( \trace, { |elem| "b1,2 ".post;
+elem.value.postln; } );
+k.elAt( \bt, \9 ).action.add( \toggleSliders, { |elem|
+	if ( elem.value > 0 ){
+		k.elAt( \joy, \l, \x ).action.enable( \xSound1 );
+		k.elAt( \joy, \l, \y ).action.enable( \ySound1 );
+		k.elAt( \joy, \l, \x ).action.disable( \xSound2 );
+		k.elAt( \joy, \l, \y ).action.disable( \ySound2 );
 	}{
-		k.elementAt( \joy, \l, \x ).action.disable( \xSound1 );
-		k.elementAt( \joy, \l, \y ).action.disable( \ySound1 );
-		k.elementAt( \joy, \l, \x ).action.enable( \xSound2 );
-		k.elementAt( \joy, \l, \y ).action.enable( \ySound2 );
+		k.elAt( \joy, \l, \x ).action.disable( \xSound1 );
+		k.elAt( \joy, \l, \y ).action.disable( \ySound1 );
+		k.elAt( \joy, \l, \x ).action.enable( \xSound2 );
+		k.elAt( \joy, \l, \y ).action.enable( \ySound2 );
 	};
 } );
 
-k.elementAt( \joy, \l, \x ).action.enable( \xSound1 );
-k.elementAt( \joy, \l, \y ).action.enable( \ySound1 );
-k.elementAt( \joy, \l, \x ).action.disable( \xSound2 );
-k.elementAt( \joy, \l, \y ).action.disable( \ySound2 );
+k.elAt( \joy, \l, \x ).action.enable( \xSound1 );
+k.elAt( \joy, \l, \y ).action.enable( \ySound1 );
+k.elAt( \joy, \l, \x ).action.disable( \xSound2 );
+k.elAt( \joy, \l, \y ).action.disable( \ySound2 );
 
 );
 

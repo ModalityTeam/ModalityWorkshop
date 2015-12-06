@@ -1,46 +1,48 @@
-/// Now that we have a device up and defined, what can we do with it?
-MKtl.find;
-k = MKtl( 'cncn2000' ); // an iControls
+/// Now that we have a device active, what can we do with it?
+
+MKtl.find(\midi);
+k = MKtl( 'icon', "*icontrols" ); // an iControls
 
 // or if it is a nanoKontrol 2:
-k = MKtl( 'nnkn20' );
-
+k = MKtl( 'nk2', "*nanokontrol2");
+k.gui;
 
 // print a nice list of elements
-k.printElementNames;
+k.postElements;
 
-// all the elements are hierarchical:
-k.elements[\bt]
-k.elements[\kn]
-k.elements[\sl]
+// the elements are in a group and organized hierarchically:
+k.elementGroup
+// the buttons are a group in elementGroup
+k.elementGroup[\bt]
 
-// the sliders
-k.elements[\sl];
-k.elements[\sl][0];
+// hierarchical access works best with elAt:
+k.elAt(\bt); // all buttons
+k.elAt(\sl); // sliders
+k.elAt(\kn); // knobs
 
-// the buttons:
-k.elements[\bt]    // all ordered buttons, left to right
-k.elements[\bt][0] // that is rows
-k.elements[\bt][0][0] // and then columns
+// access by name or index, fullname:
+k.elAt(\sl);
+k.elAt(\sl, 0);
+k.elAt(\sl, \1);
+k.dictAt(\sl_1);
 
-// or use another syntax:
-k.elementAt( \bt, 0, 0 );
-
-// in the printed element names, these show up with "_" in between: joy_l_x
-k.printElementNames;
+// buttons are nested more deeply:
+k.elAt(\bt, 'S'); // all buttons named 'S' as printed on device
+k.elAt(\bt, 'S', \1); // button 'S' of first column
+k.elAt(\bt, 0, 0); // also access by index -  begins with 0
+k.dictAt(\bt_S_1);
 
 // getting the current value:
-k.elements[\bt][0][0].value;
+k.elAt(\sl, 0).value;
 
-k.elements[\sl][0].value;
-
-// value is automatically mapped between 0 and 1
 
 //Add an action to the element:
-k.elements[\sl][0].action_({ |mktlElement| mktlElement.value.postln })
+k.elAt(\sl, 0).action_({ |elem| elem.value.postln })
 
 //to remove the action
-k.elements[\sl][0].reset
+k.elAt(\sl, 0).reset
+
+
 
 // example with sound:
 s.boot;
@@ -60,22 +62,22 @@ x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0]);
 k.reset;
 
 //slider 0 -> amplitude
-k.elements[\sl][0].action_({ |mktlElement| x !? _.set(\amp, mktlElement.value) });
+k.elAt(\sl, 0).action_({ |elem| x !? _.set(\amp, \amp.asSpec.map(elem.value)) });
 
 //knob 0 -> pan
-k.elements[\kn][0].action_({ |mktlElement| x !? _.set(\pan, mktlElement.value.linlin(0.0, 1.0, -1.0, 1.0) ) });
+k.elAt(\kn, 0).action_({ |elem| x !? _.set(\pan, \pan.asSpec.map(elem.value)) });
 
 //slider 1
-k.elements[\sl][1].action_({ |mktlElement| x !? _.set(\freq, mktlElement.value.linlin(0.0, 1.0, 200, 2000) ) });
+k.elAt(\sl, 1).action_({ |elem| x !? _.set(\freq, elem.value.linlin(0.0, 1.0, 50, 2000) ) });
 
 //knob 1 -> number of harmonics
-k.elements[\kn][1].action_({ |mktlElement| x !? _.set(\numHarmonics, mktlElement.value.linexp(0.0, 1.0, 1, 200) ) });
+k.elAt(\kn, 1).action_({ |elem| x !? _.set(\numHarmonics, elem.value.linexp(0.0, 1.0, 1, 50) ) });
 )
 
 (
 // play button -> start and stop synth
-k.elements[\play].action_({  |mktlElement|
-    if(mktlElement.value.booleanValue) {
+k.elAt(\tr, \play).action_({  |elem|
+    if(elem.value > 0) {
         x !? _.free;
         x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0])
     } {
@@ -93,26 +95,26 @@ x.free;
 
 // assigning multiple actions can be done with .addAction;
 (
-k.elements[\sl][0].addAction({ |mktlElement| ("1 :"++mktlElement.value).postln });
-k.elements[\sl][0].addAction({ |mktlElement| ("2 :"++mktlElement.value).postln });
+k.elAt(\sl, 0).addAction({ |elem| ("1 :"++elem.value).postln });
+k.elAt(\sl, 0).addAction({ |elem| ("2 :"++elem.value).postln });
 )
 //clear all
-k.elements[\sl][0].reset;
+k.elAt(\sl, 0).reset;
 
 /// to remove them you need to have a reference to the function
 (
-f = { |mktlElement| ("1 :"++mktlElement.value).postln };
-g = { |mktlElement| ("2 :"++mktlElement.value).postln };
-k.elements[\sl][0].addAction(f);
-k.elements[\sl][0].addAction(g);
+f = { |elem| ("1 :"++elem.value).postln };
+g = { |elem| ("2 :"++elem.value).postln };
+k.elAt(\sl, 0).addAction(f);
+k.elAt(\sl, 0).addAction(g);
 )
 
 //remove first action
-k.elements[\sl][0].removeAction(f);
+k.elAt(\sl, 0).removeAction(f);
 // just 2 is left
 
 //clear all
-k.elements[\sl][0].reset
+k.elAt(\sl, 0).action = nil;
 
 
 /// =========== output to elements (if you have any on your midi device) =============
@@ -123,13 +125,11 @@ k.inputElements;
 // check which outputs are there:
 k.outputElements;
 
-// my device has none...
-
 // sending data to the output elements
-// value range between 0 and 1, will be mapped according to the spec given in the description file
+// value range between 0 and 1, will be mapped according to the
+// deviceSpec given in the description file
+// should set LEDs on all S buttons
 /*
-k.elements[\rumble][\l].value = 0.75;
-k.elements[\rumble][\l].value = 0;
-k.elements[\rumble][\r].value = 0.5;
-k.elements[\rumble][\r].value = 0;
+k.elAt(\bt, \S).do { |elem| elem.value_(1.0) };
+k.elAt(\bt, \S).do { |elem| elem.value_(0.0) };
 */
