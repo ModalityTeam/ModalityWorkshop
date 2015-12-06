@@ -1,4 +1,4 @@
-// SOUND 2 // the DubCat example from our Class:
+// SOUND 2 // the DubCat example from udk gencomp class:
 (
 // controlspecs
 Ndef(\cat).addSpec(\pFreq, [20, 400, \exp]);
