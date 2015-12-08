@@ -31,7 +31,7 @@ k.elAt(\joy, \l, \x).value;
 k.elAt(\joy, \l, \x).action_({ |elem| elem.value.postln })
 
 //to remove the action
-k.elAt(\joy, \l, \x).reset
+k.elAt(\joy, \l, \x).resetAction;
 
 // example with sound:
 s.boot;
@@ -48,7 +48,7 @@ x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0]);
 
 (
 //clear all actions first
-k.reset;
+k.resetAction;
 
 // left joystick:
 y-axis -> amp, 0.5 is rest position, so we rescale to range of [-1,1]
@@ -77,7 +77,7 @@ k.elAt(\bt, \6).action_({  |elem|
 );
 
 // clear all functions
-k.reset;
+k.resetAction;
 // stop the synth:
 x.free;
 
@@ -88,7 +88,7 @@ k.elAt(\joy, \l, \x).addAction({ |elem| ("1 :"++elem.value).postln });
 k.elAt(\joy, \l, \x).addAction({ |elem| ("2 :"++elem.value).postln });
 )
 //clear all
-k.elAt(\joy, \l, \x).reset
+k.elAt(\joy, \l, \x).resetAction;
 
 /// to remove them you need to have a reference to the function
 (
@@ -102,7 +102,7 @@ k.elAt(\joy, \l, \x).addAction(g);
 k.elAt(\joy, \l, \x).removeAction(f); // just 2 is left
 
 //clear all
-k.elAt(\joy, \l, \x).reset
+k.elAt(\joy, \l, \x).resetAction;
 
 
 /// =========== output to elements =============

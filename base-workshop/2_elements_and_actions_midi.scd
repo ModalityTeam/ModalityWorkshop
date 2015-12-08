@@ -40,7 +40,7 @@ k.elAt(\sl, 0).value;
 k.elAt(\sl, 0).action_({ |elem| elem.value.postln })
 
 //to remove the action
-k.elAt(\sl, 0).reset
+k.elAt(\sl, 0).resetAction;
 
 
 
@@ -59,7 +59,7 @@ x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0]);
 
 (
 //clear all actions first
-k.reset;
+k.resetAction;
 
 //slider 0 -> amplitude
 k.elAt(\sl, 0).action_({ |elem| x !? _.set(\amp, \amp.asSpec.map(elem.value)) });
@@ -88,7 +88,7 @@ k.elAt(\tr, \play).action_({  |elem|
 );
 
 // clear all functions
-k.reset;
+k.resetAction;
 // stop the synth:
 x.free;
 
@@ -99,7 +99,7 @@ k.elAt(\sl, 0).addAction({ |elem| ("1 :"++elem.value).postln });
 k.elAt(\sl, 0).addAction({ |elem| ("2 :"++elem.value).postln });
 )
 //clear all
-k.elAt(\sl, 0).reset;
+k.elAt(\sl, 0).resetAction;
 
 /// to remove them you need to have a reference to the function
 (
