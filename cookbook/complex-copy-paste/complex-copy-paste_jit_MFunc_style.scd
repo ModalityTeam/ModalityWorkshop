@@ -144,6 +144,8 @@ q.srcTogPlay(1, 1);
 q.srcTogPlay(1, 0);
 q.srcTogPlay(2, 1);
 q.srcTogPlay(2, 0);
+q.allSnds[0].play;
+
 */
 
 (
@@ -265,8 +267,8 @@ q.srcTogPlay(5, 0); //  and off again
 // To attach this basic layer of functions to an MPD18, one can:
 // 1. Make an MPD18 MIDIMKtl:
 /*
-// m = MIDIMKtl('kmpd180');  // Akai MPD18
-m = MKtl('kmpd180');  // Akai MPD18
+//
+m = MKtl('mpd', "*mpd18");  // Akai MPD18
 */
 // if you don't have one, this makes a virtual one by gui, or
 // 2. Make a GUI that resembles an MPD18 and has all the

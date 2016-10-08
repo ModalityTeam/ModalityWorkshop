@@ -1,12 +1,13 @@
-m = MKtl(\gp, 'hid_0_run_n_drive');
+// make an MKtl gamepad
+m = MKtl(\gp, "*drive"); m.gui;
+m.trace;
 
-
-m.trace(true)
-m.trace(false)
+m.trace(false);
 
 s.boot;
+s.latency = nil; // fast response to control
 
-
+// make an Ndef to play
 (
 Ndef(\fSine).addSpec(\freq, [200, 800, \exp]);
 Ndef(\fSine).addSpec(\amp, [0, 1]);
@@ -29,83 +30,70 @@ Ndef(\fSine, {
 
 	) * \amp.kr(0, lag);
 
-
-	MyRotate2.ar(src, SinOsc.ar(0.0124));
-
-}).play;
-
-Ndef(\fSine2).addSpec(\freq, [200, 800, \exp]);
-Ndef(\fSine2).addSpec(\amp, [0, 1]);
-Ndef(\fSine2).addSpec(\modAmp, [0, 1]);
-Ndef(\fSine2).addSpec(\modIndex, [1, 10, \lin, 1]);
-Ndef(\fSine2).addSpec(\spread, [0, 0.7]);
-Ndef(\fSine2).addSpec(\lag, [0.1, 10, \exp]);
-Ndef(\fSine2, {
-	var lag = \lag.kr(1);
-	var freq = \freq.kr(0, lag);
-	var modFreq = freq * \modIndex.kr(0, lag);
-	var modAmp = \modAmp.kr(0, lag);
-	var src;
-
-	freq = freq + [0, \spread.kr(0)];
-
-	src = SinOsc.ar(
-		freq +
-		(SinOsc.ar(modFreq, mul: modAmp) * 1000)
-
-	) * \amp.kr(0, lag);
-
-
-	MyRotate2.ar(src, SinOsc.ar(0.0124));
+	Pan2.ar(src, SinOsc.ar(0.0124, [0, 0.5pi])).sum;
 
 }).play;
+
+// copy sound and its specs to a second Ndef
+Ndef(\fSine).copy(\fSine2);
+Ndef(\fSine).getSpec.keysValuesDo { |key, spec|
+	Ndef(\fSine2).addSpec(key, spec.copy);
+};
+Ndef(\fSine2).play;
 )
-NdefMixer(s)
-s.latency = nil;
+
+NdefMixer(s);
 
 q = ();
 
-q.activated = [m.elementAt(\bt, 1), m.elementAt(\bt, 2)]; // activate sound
+// hold down buttons 1 and 2 to activate control on
+// Ndef(\fSine) and Ndef(\fSine2)
+// - no buttons, no control, both buttons, both controls
+q.activated = [, m.elAt(\bt, \2)];
 
-q.sounds = [Ndef(\fSine), Ndef(\fSine2)];
+Ndef(\fSine).addHalo(\actBut, m.elAt(\bt, \1));
+Ndef(\fSine2).addHalo(\actBut, m.elAt(\bt, \2));
 
-
+q.ndefs = [Ndef(\fSine), Ndef(\fSine2)];
+q.ndefs.do(_.play);
 
 (
-m.elementAt(\throt, \l).action_{|el|
+// left throttle sets amp if active
+m.elAt(\throt, \l).action_{ |el|
+	q.ndefs.do {|ndef|
+		if (ndef.getHalo(\actBut).value > 0) {
+			ndef.setUni(*[\amp, el.value].postln)
+		}
+	};
+};
+// joy stick left y-axis sets freq
+m.elAt(\joy, \l, \y).action_{|el|
+	q.ndefs.do {|ndef|
+		if (ndef.getHalo(\actBut).value > 0) {
+			ndef.setUni(\freq, el.value.linlin(0, 1, 1, 0))
+		}
+	};
+};
+// left x sets modIndex
+m.elAt(\joy, \l, \x).action_{|el|
+	q.ndefs.do {|ndef|
+		if (ndef.getHalo(\actBut).value > 0) {
+			ndef.setUni(\modIndex, el.value)
+		}
+	};
+};
 
-	[q.sounds, q.activated.collect(_.value)].flop.do{|a|
-		(a[1] > 0).if{
-			a[0].setUni(\amp, el.value)
-		}
-	};
-
-};
-m.elementAt(\joy, \l, \y).action_{|el|
-	[q.sounds, q.activated.collect(_.value)].flop.do{|a|
-		(a[1] > 0).if{
-			a[0].setUni(\freq, el.value.linlin(0, 1, 1, 0))
+m.elAt(\throt, \r).action_{|el|
+	q.ndefs.do {|ndef|
+		if (ndef.getHalo(\actBut).value > 0) {
+			ndef.setUni(\modAmp, el.value)
 		}
 	};
 };
-m.elementAt(\joy, \l, \x).action_{|el|
-	[q.sounds, q.activated.collect(_.value)].flop.do{|a|
-		(a[1] > 0).if{
-			a[0].setUni(\modIndex, el.value)
-		}
-	};
-};
-m.elementAt(\throt, \r).action_{|el|
-	[q.sounds, q.activated.collect(_.value)].flop.do{|a|
-		(a[1] > 0).if{
-			a[0].setUni(\modAmp, el.value)
-		}
-	};
-};
-m.elementAt(\joy, \r, \x).action_{|el|
-	[q.sounds, q.activated.collect(_.value)].flop.do{|a|
-		(a[1] > 0).if{
-			a[0].setUni(\spread, el.value)
+m.elAt(\joy, \r, \x).action_{|el|
+	q.ndefs.do {|ndef|
+		if (ndef.getHalo(\actBut).value > 0) {
+			ndef.setUni(\spread, el.value)
 		}
 	};
 };
