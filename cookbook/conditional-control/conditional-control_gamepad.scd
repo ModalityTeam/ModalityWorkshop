@@ -1,3 +1,13 @@
+// example for conditional control:
+// control elements - here, gamepad axes
+// only apply to a target - here an Ndef
+// when their respective buttons are held down.
+
+// to test this with gui only,
+// focus on bt1 and press key 'T' to switch it to toggle mode,
+// and do the same with bt 2.
+
+
 // make an MKtl gamepad
 m = MKtl(\gp, "*drive"); m.gui;
 m.trace;
@@ -40,7 +50,7 @@ Ndef(\fSine).getSpec.keysValuesDo { |key, spec|
 	Ndef(\fSine2).addSpec(key, spec.copy);
 };
 Ndef(\fSine2).play;
-)
+);
 
 NdefMixer(s);
 
@@ -49,7 +59,7 @@ q = ();
 // hold down buttons 1 and 2 to activate control on
 // Ndef(\fSine) and Ndef(\fSine2)
 // - no buttons, no control, both buttons, both controls
-q.activated = [, m.elAt(\bt, \2)];
+q.activated = [m.elAt(\bt, \1), m.elAt(\bt, \2)];
 
 Ndef(\fSine).addHalo(\actBut, m.elAt(\bt, \1));
 Ndef(\fSine2).addHalo(\actBut, m.elAt(\bt, \2));

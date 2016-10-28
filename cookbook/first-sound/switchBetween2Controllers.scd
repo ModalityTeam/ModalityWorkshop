@@ -1,7 +1,7 @@
 s.boot;
 
 /* Same example as firstSound, with one difference:
-It can use both a nanoKontrol2 and a nanoKontrol2,
+It can use both a nanoKontrol (1) and a nanoKontrol2,
 and shows how to write code in a way that switching
 to a different controller becomes simple.
 
@@ -13,14 +13,14 @@ to a different controller becomes simple.
 // a dictionary to put global variables in
 q = ();
 
-// open the nanoKontrol2
-k = MKtl('nnkn20');
+// open the nanoKontrol2 if you have that
+k = MKtl('nk2', "*nanokontrol2");
 // can do everything from gui if desired
 k.gui;
 
 
-// open the nanoKontrol if you have one
-n = MKtl('nnkn0');
+// open the nanoKontrol if you have that one
+n = MKtl('nk', "*nanokontrol");
 // can do everything from gui if desired
 n.gui;
 /*
@@ -29,6 +29,7 @@ n.gui;
 MKtl.find(\midi);
 n.openDevice;
 */
+n.elAt(\sl);
 
 // create a Synth to control
 (
@@ -50,21 +51,21 @@ x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0]);
 
 
 //clear all actions first
-k.reset; n.reset;
+k.resetActions; n.resetActions;
 
 
-// if you use a nano2, do these:
+// if you have  a nano2, do these:
 q.sliders = k.elementAt(\sl);
 q.knobs = k.elementAt(\kn);
 
-
-// the old nanoKontrol has 4 hardware scenes,
+// if you have an old nanoKontrol 1:
+// this one has 4 hardware scenes,
 // so select the sliders and knobs from scene 1:
 q.sliders = n.elementAt(\sl, 0);
 q.knobs = n.elementAt(\kn, 0);
 
 
-// now this part is independent of the controller:
+// now this code is independent of the controller:
 (
 //knob 1 -> amplitude
 q.knobs[0].action_({ |el| x.set(\amp, el.value) });

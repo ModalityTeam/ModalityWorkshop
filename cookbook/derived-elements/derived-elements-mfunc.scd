@@ -43,7 +43,6 @@ y.action.add(\post, { |el| [el.name, el.value].postln });
 [x, y].do { |el| el.action.disable(\post) };
 	// enable logging again
 [x, y].do { |el| el.action.enable(\post) };
-[x, y].do { |el| el.action.disable(\post) };
 
 
 // make a derived element z, which converts x and y to polar angle
@@ -72,7 +71,7 @@ z.action.add(\postAtan2, { |polar|
 });
 )
 
-// use z like any MKtlelement, e.g. in a running pattern:
+// use z like any MKtlElement, e.g. in a running pattern:
 // - move 2dslider while pattern plays,
 // - and watch its normalized value
 a = Pbind(\polar, z).trace.play;

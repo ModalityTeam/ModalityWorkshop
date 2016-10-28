@@ -9,7 +9,7 @@ s.boot;
 k = MKtl('nk2', "korg-nanokontrol2");
 
 // make a gui for the mktl
-m.gui;
+k.gui;
 
 // create a Synth to control
 (
@@ -33,20 +33,19 @@ x = Synth(\blippy, [\freq, 440, \numHarmonics, 100, \amp, 0.5, \pan, 0]);
 k.reset;
 
 //knob 1 -> amplitude
-k.elementAt(\kn, 0).action_({ |el| x.set(\amp, el.value) });
+k.elAt(\kn, 0).action_({ |el| x.set(\amp, el.value) });
 
 
 //Alternative syntax:
-k.elementAt(\kn, 0).action = { |el| x.set(\amp, el.value) };
+k.elAt(\kn, 0).action = { |el| x.set(\amp, el.value) };
 
 
 //knob 2 -> pan
-k.elementAt(\kn, 1).action_({ |el| x.set(\pan, el.value.linlin(0.0, 1.0, -1.0, 1.0) ) });
+k.elAt(\kn, 1).action_({ |el| x.set(\pan, el.value.linlin(0.0, 1.0, -1.0, 1.0) ) });
 
 //slider 1 -> frequency
-k.elementAt(\sl, 0).action_({ |el| x.set(\freq, el.value.linlin(0.0, 1.0, 100, 400) ) });
+k.elAt(\sl, 0).action_({ |el| x.set(\freq, el.value.linlin(0.0, 1.0, 100, 400) ) });
 
 //slider 2 -> number of harmonics
-k.elementAt(\sl, 1).action_({ |el| x.set(\numHarmonics, el.value.linexp(0.0, 1.0, 5, 200) ) });
-
+k.elAt(\sl, 1).action_({ |el| x.set(\numHarmonics, el.value.linexp(0.0, 1.0, 5, 200) ) });
 )
