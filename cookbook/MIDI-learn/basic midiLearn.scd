@@ -42,8 +42,8 @@ q[\synthCtl] = {|el|
 
 // group of elements from which the element is selected from,
 // get them from the nanoKontrol 2 :
-q.sliders = m.elementAt(\sl);
-q.buttons = m.elementAt(\bt);
+q.sliders = m.elAt(\sl);
+q.buttons = m.elAt(\bt);
 
 // this action goes to the group of elements
 // and will add the action to the first element activated:
