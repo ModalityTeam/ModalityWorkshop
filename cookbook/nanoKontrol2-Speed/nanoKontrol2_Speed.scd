@@ -9,13 +9,18 @@ s.waitForBoot{
 		// find devices
 		MKtl.find;
 		// open the nanoKontrol2
-		k = MKtl('nnkn20');
+		k = MKtl('nk2', "*trol2");
 		// reset all the actions
-		k.reset;
+		k.resetActions;
 		// syncing the server
 		s.sync;
 		// using an Ndef to prepare a sound
-		Ndef(\tik, {|freq=8, peak=4000, rel=0.2, att=0.01, cut=2000, rq=0.9, dt=0.1, fb=1| CombL.ar(BLowPass.ar(Saw.ar(peak.lag(0.01), EnvGen.ar(Env.perc(att, rel, 0.5, -8), Impulse.kr(freq.lag(0.1)))), cut.lag(0.01), rq.lag(0.01)),0.2, [dt,dt-0.001].lag(0.01), fb).tanh});
+		Ndef(\tik, {|freq=8, peak=4000, rel=0.2, att=0.01, cut=2000, rq=0.9, dt=0.1, fb=1|
+			CombL.ar(BLowPass.ar(Saw.ar(peak.lag(0.01),
+				EnvGen.ar(Env.perc(att, rel, 0.5, -8), Impulse.kr(freq.lag(0.1)))
+			),
+			cut.lag(0.01), rq.lag(0.01)),0.2, [dt,dt-0.001].lag(0.01), fb).tanh
+		});
 		// play the Ndef
 		Ndef(\tik).play;
 		// syncing the server

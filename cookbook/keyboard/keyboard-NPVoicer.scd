@@ -2,7 +2,7 @@
 // access a keyboard and play a basic multitimbral sound
 // uses NPVoicer from the JITLibExtensions quark
 /*
-"JITLibExtensions".include;
+Quarks.install("JITLibExtensions");
 */
 
 // boot server
@@ -44,58 +44,63 @@ g.put(55, [\midiNote, 55]);
 g.put(64, [\midiNote, 64]);
 g.release(55);
 g.release(64);
+g.release(0);
 
+m.postElements;
 
 (
 // keys do noteOn
-m.elementAt(\key, \on).action_{|el|
-	"on: %\n".postf(el.index);
-	g.put(el.index, [\midiNote, el.index, \amp, el.value.squared]);
+~onAction = {|el|
+	var note = el.elemDesc.midiNum; "on: %\n".postf(note);
+	g.put(note, [\midiNote, note, \amp, el.value.squared]);
 };
+m.elAt(\key, \all, \on).do(_.action_(~onAction));
 
 // and noteOff
-m.elementAt(\key, \off).action_{|el|
-	"off: %\n".postf(el.index);
-	g.release(el.index)
+~offAction = {|el|
+	var note = el.elemDesc.midiNum;  "off: %\n".postf(note);
+	g.release(note);
 };
+m.elAt(\key, \all, \off).do(_.action_(~offAction));
 
-m.elementAt(\bend).action_{|el|
-	Ndef(\piano).set(\bendFac, el.value)
+// bending
+m.elAt(\bend).action_{|el|
+	Ndef(\piano).set(\bendFac, el.value);
 };
 // first knob changes resonance
-m.elementAt(\kn, \turn, 0).action_{|el|
+m.elAt(\kn, \turn, 0).action_{|el|
 	Ndef(\piano).set(\res, el.value.linlin(0, 1, 0, 1).postln)
 };
 
-m.elementAt(\kn, 1).action_{|el|
+m.elAt(\kn, 1).action_{|el|
 	Ndef(\piano).set(\ffac, el.value.linexp(0, 1, 0.125, 8).postln)
 };
 )
 
 // now hit one of its keys, or simulate:
+g.play;
 
-m.elementAt(\key, \on, 64).valueAction_(0.25);
-m.elementAt(\bend).valueAction_(0.75);
-m.elementAt(\bend).valueAction_(0.5);
+m.elAt(\key, 64, \on).valueAction_(0.5);
+m.elAt(\bend).valueAction_(0.75);
+m.elAt(\bend).valueAction_(0.5);
 
-m.elementAt(\kn, \turn, 0).valueAction_(0.5);
+m.elAt(\kn, \turn, 0).valueAction_(0.5);
 
-m.elementAt(\kn, \turn, 1).valueAction_(0.7);
-m.elementAt(\key, \off, 64).valueAction_(0);
+m.elAt(\kn, \turn, 1).valueAction_(0.7);
+m.elAt(\key, 64, \off).valueAction_(0);
 
-m.elementAt(\key, \on, 67).valueAction_(0.25);
-m.elementAt(\key, \off, 67).valueAction_(0.25);
-
-s.queryAllNodes
+m.elAt(\key, 67, \on).valueAction_(0.25);
+m.elAt(\key, 67, \off).valueAction_(0.25);
 
 
 Tdef(\noodle, {
+	g.play;
 	inf.do {
 		var dt = 0.25;
 		var note = [0, 2, 5, 10].choose + 60;
-		var elemOn = m.elementAt(\key, \on, note);
-		var elemOff = m.elementAt(\key, \off, note);
-		elemOn.valueAction_(0.5).postln;
+		var elemOn = m.elAt(\key, note, \on);
+		var elemOff = m.elAt(\key, note, \off);
+		elemOn.valueAction_(0.5);
 		defer ({ elemOn.valueAction_(0) }, dt);
 		dt.wait;
 	};

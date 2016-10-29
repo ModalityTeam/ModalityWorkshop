@@ -8,8 +8,8 @@ Look at the LED's on the nanoKontrol2!
 s.waitForBoot{
 
 	MKtl.find;
-	n = MKtl('nnkn20');
-	n.reset;
+	n = MKtl('nk2', "*trol2");
+	n.resetActions;
 	~nrBands = 8;
 	~nrLights = 8;
 	~lowBand = 50;
