@@ -51,9 +51,7 @@ Ndef(\test, { |freq=250, intv=19, timescale=1, curve=0, loopnode=0, formfact=2, 
 
 // make a little gui to see Ndef parameter and playing state:
 
-q.ndgui = NdefGui(Ndef(\test), 8);
-q.ndgui.skipjack.dt = 0.05; // faster updates
-
+q.ndgui = NdefGui(Ndef(\test), 10);
 
 // now make an MKtl:
 q.nk = MKtl(\nk2, "korg-nanokontrol2");
@@ -98,10 +96,8 @@ q.nk.gui;
 
 q.ndgui.close;
 
-// make it again ?
+// make guis again ?
 q.ndgui = NdefGui(Ndef(\test), 8);
-q.ndgui.skipjack.dt = 0.05; // faster updates
-
 q.nk.gui;
 
 
@@ -166,8 +162,8 @@ q.setNkProxy = { |q, proxy|
 		};
 
 		// add play and stop buttons
-		q.nk.elAt(\play).action = { |el| q.nkProxy.play; };
-		q.nk.elAt(\stop).action = { |el| q.nkProxy.stop; };
+		q.nk.elAt(\tr, \play).action = { |el| q.nkProxy.play; };
+		q.nk.elAt(\tr, \stop).action = { |el| q.nkProxy.stop; };
 	};
 };
 
@@ -200,8 +196,8 @@ q.setNkProxy(Ndef(\test2));
 q.setNkProxy(Ndef(\test));
 
 // now assign rew and fwd buttons to switch between \test and \test2
-q.nk.elAt(\rew).action = { |el| q.setNkProxy(Ndef(\test)); };
-q.nk.elAt(\fwd).action = { |el| q.setNkProxy(Ndef(\test2)); };
+q.nk.elAt(\tr, \rew).action = { |el| q.setNkProxy(Ndef(\test)); };
+q.nk.elAt(\tr, \fwd).action = { |el| q.setNkProxy(Ndef(\test2)); };
 
 // continued with more complex guis:
 // see mapping-to-proxies-2 !

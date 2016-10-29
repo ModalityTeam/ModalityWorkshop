@@ -1,6 +1,8 @@
 /***
-This file shows how to connect to a nanoKontrol 2 to a MasterFX
-instance.
+This file shows how to connect to a nanoKontrol 2 to a MasterFX instance.
+
+Not finished yet, ends with some open code design questions.
+
 ***/
 
 q = q ? ();
@@ -25,8 +27,7 @@ q.masterFXGui.editGui.skipjack.dt = 0.05;
 )
 
 q.nk = MKtl(\nk2, "korg-nanokontrol2");
-q.nk.gui;
-q.nk.reset;
+q.nkgui = q.nk.gui;
 
 
 
@@ -102,14 +103,17 @@ q.nk.elementAt(\sl).do { |sl, i|
 q.mapElementsToParamsFrom = { |q, elemgroup, editGui, indexOffset = 0|
 	elemgroup.do { |elem, i|
 		elem.action = { |el|
-			var paramKey = editGui.editKeys[i + indexOffset];
-			var proxy = editGui.proxy;
-			var spec = proxy.getSpec(paramKey);
-			spec = spec ?? { editGui.paramGui.specs[paramKey] };
-			proxy.softSet(paramKey,
-				spec.map(el.value),
-				within: 0.04,
-			 lastVal: spec.map(el.prevValue));
+			var proxy, paramKey, spec;
+			proxy = editGui.proxy;
+			paramKey = editGui.editKeys[i + indexOffset];
+			if (paramKey.notNil) {
+				spec = proxy.getSpec(paramKey);
+				spec = spec ?? { editGui.paramGui.specs[paramKey] };
+				proxy.softSet(paramKey,
+					spec.map(el.value),
+					within: 0.04,
+					lastVal: spec.map(el.prevValue));
+			};
 		}
 	};
 };
