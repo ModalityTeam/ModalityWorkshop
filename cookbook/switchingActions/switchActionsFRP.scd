@@ -28,8 +28,9 @@ q.synths = [
 
 CmdPeriod.add{ q.window !? _.close };
 
-EventNetwork(ENDef({
+ENdef(\test,{
 
+	// **** INPUTS ****
 	var knobs = q.knobs.collect(_.enInES);
 	var knobsSig = knobs.collect(_.hold(0.0));
 	var but = q.button.enInES.collect(_.booleanValue);
@@ -41,7 +42,7 @@ EventNetwork(ENDef({
 	//it is exited when two different knobs are moved
 
 	var exchange = (
-		but.select({ |x| x}).collect{ { [] } } |
+		but.collect{ |x| if(x){ {[]}  }{ {nil} } } |
 		knobs.collect{ |es,i|
 			es.collect{
 				{ |state|
@@ -55,8 +56,8 @@ EventNetwork(ENDef({
 			}
 		}.mreduce
 	).injectF(nil)
-	.select({ |xs| xs.size == 2});
-	//.enDebug("exchange");
+	.select({ |xs| xs.size == 2})
+	.enDebug("exchange");
 
 	//index i of this array is the knob that will go into action i;
 	var startState = [0,1,2,3]; //which knobs go to which action
@@ -79,6 +80,7 @@ EventNetwork(ENDef({
 	};
 
 	// **** FRP LOGIC STOP *****
+	// **** OUTPUS *****
 
 	//set synth
 	[outputs, q.synths].flopWith{ |sig, synth|
@@ -98,6 +100,6 @@ EventNetwork(ENDef({
 		box.enSinkValue( sig )
 	}
 
-},true)).start
+},true).start
 //cmd period kills all the frp action
 )
